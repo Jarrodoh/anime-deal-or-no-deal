@@ -124,16 +124,16 @@ function RevealedCard({ box, onNext }: { box: Box; onNext: () => void }) {
 
       {/* Info + Next button overlaid at bottom */}
       <div
-        className="absolute inset-x-0 bottom-0 flex flex-col items-start px-2 pb-2 pt-10"
-        style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.98) 0%, rgba(14,27,46,0.6) 60%, transparent 100%)' }}
+        className="absolute inset-x-0 bottom-0 flex flex-col items-start px-2 pb-2 pt-14"
+        style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.99) 0%, rgba(14,27,46,0.75) 55%, transparent 100%)' }}
       >
-        <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-0.5 tier-' + box.anime.tier)}>
+        <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-1 tier-' + box.anime.tier)}>
           {box.anime.tier}
         </span>
-        <p className="text-[10px] text-white/85 font-semibold leading-tight line-clamp-1 w-full mb-0.5">
+        <p className="text-sm font-bold leading-tight line-clamp-2 w-full mb-1 text-white/90">
           {box.anime.title}
         </p>
-        <p className="text-[11px] font-bold mb-2" style={{ color: tierColor }}>
+        <p className="text-xl font-black mb-2" style={{ color: tierColor }}>
           {box.anime.rating.toFixed(1)}
         </p>
 
