@@ -228,7 +228,7 @@ export default function GamePage() {
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:w-60 xl:w-64 space-y-5">
+          <aside className="lg:w-72 xl:w-80 space-y-5">
             {/* Player box (desktop) */}
             {playerBox && (
               <div className="hidden lg:flex justify-center">
@@ -236,22 +236,8 @@ export default function GamePage() {
               </div>
             )}
 
-            {/* Remaining board EV */}
-            {state.phase !== 'pick_box' && state.phase !== 'result' && (
-              <div className="rounded-xl border border-white/8 bg-white/3 p-3">
-                <p className="text-xs text-white/40 mb-1">Board avg rating</p>
-                <p className="text-lg font-bold text-white">
-                  {(
-                    remainingBoard.reduce((s, b) => s + b.anime.rating, 0) /
-                    Math.max(remainingBoard.length, 1)
-                  ).toFixed(2)}
-                </p>
-                <p className="text-xs text-white/30">{remainingBoard.length} boxes remaining</p>
-              </div>
-            )}
-
-            {/* Value board */}
-            <div className="rounded-xl border border-white/8 bg-white/3 p-3">
+            {/* Value board — EV is shown inside it */}
+            <div className="rounded-xl border border-white/10 bg-white/3 p-4">
               <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} />
             </div>
           </aside>
