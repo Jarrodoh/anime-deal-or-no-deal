@@ -137,45 +137,29 @@ export default function GamePage() {
         </div>
       </header>
 
-      <div className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* Main game area */}
-          <div className="flex-1 space-y-5">
-            {/* Phase instruction */}
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
+
+        {/* Grid row: BoxGrid centered + PlayerBox beside it */}
+        <div className="flex gap-6 justify-center items-start">
+          {/* Main game column — capped width so the 3x3 grid stays reasonable */}
+          <div className="w-full max-w-lg space-y-5">
             <AnimatePresence mode="wait">
               {state.phase === 'pick_box' && (
-                <motion.div
-                  key="pick"
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="text-center py-3"
-                >
+                <motion.div key="pick" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center py-2">
                   <h2 className="text-xl font-black text-white mb-1">Choose your box</h2>
                   <p className="text-white/50 text-sm">Pick one — you will keep it until the end or trade it away</p>
                 </motion.div>
               )}
               {state.phase === 'opening' && (
-                <motion.div
-                  key="open"
-                  initial={{ opacity: 0, y: -8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  className="text-center py-3"
-                >
-                  <h2 className="text-xl font-black text-white mb-1">
-                    Open {boxesLeft} box{boxesLeft !== 1 ? 'es' : ''}
-                  </h2>
+                <motion.div key="open" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center py-2">
+                  <h2 className="text-xl font-black text-white mb-1">Open {boxesLeft} box{boxesLeft !== 1 ? 'es' : ''}</h2>
                   <p className="text-white/50 text-sm">
-                    {lastOpenedTitle
-                      ? `Last opened: ${lastOpenedTitle}`
-                      : 'Select boxes from the board to eliminate them'}
+                    {lastOpenedTitle ? `Last opened: ${lastOpenedTitle}` : 'Select boxes from the board to eliminate them'}
                   </p>
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {/* Box grid — only active (non-opened) boxes */}
             <BoxGrid
               boxes={state.boxes}
               playerBoxId={state.playerBoxId}
@@ -183,68 +167,41 @@ export default function GamePage() {
               onSelectBox={state.phase === 'pick_box' ? pickBox : handleBoxOpen}
             />
 
-            {/* Eliminated zone */}
-            <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
-
-            {/* Player box display (mobile) */}
+            {/* Mobile: player box below grid */}
             {playerBox && (
               <div className="flex justify-center lg:hidden">
                 <PlayerBoxDisplay box={playerBox} phase={state.phase} />
               </div>
             )}
 
-            {/* Final swap prompt */}
-            {state.phase === 'offer' && state.currentOffer && !showingBankerCall && (
-              <OfferModal
-                offer={state.currentOffer}
-                onDeal={takeDeal}
-                onNoDeal={declineDeal}
-              />
-            )}
-
             {state.phase === 'final_swap' && state.currentOffer && !showingBankerCall && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5 text-center"
-              >
+              <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+                className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5 text-center">
                 <p className="text-xs text-yellow-400/70 uppercase tracking-widest mb-2">Final Decision</p>
                 <h3 className="text-lg font-black text-white mb-1">One box remains on the board</h3>
-                <p className="text-white/50 text-sm mb-4">
-                  Swap your box for the last board box, or keep what you have.
-                </p>
+                <p className="text-white/50 text-sm mb-4">Swap your box for the last board box, or keep what you have.</p>
                 <div className="flex gap-3">
-                  <button
-                    onClick={swap}
-                    className="flex-1 py-3 rounded-xl font-bold border border-blue-400/40 text-blue-400 bg-blue-400/10 hover:bg-blue-400/20 transition-all"
-                  >
-                    Swap Box
-                  </button>
-                  <button
-                    onClick={keepBox}
-                    className="flex-1 py-3 rounded-xl font-bold border border-white/20 text-white/80 hover:bg-white/10 transition-all"
-                  >
-                    Keep Mine
-                  </button>
+                  <button onClick={swap} className="flex-1 py-3 rounded-xl font-bold border border-blue-400/40 text-blue-400 bg-blue-400/10 hover:bg-blue-400/20 transition-all">Swap Box</button>
+                  <button onClick={keepBox} className="flex-1 py-3 rounded-xl font-bold border border-white/20 text-white/80 hover:bg-white/10 transition-all">Keep Mine</button>
                 </div>
               </motion.div>
             )}
           </div>
 
-          {/* Sidebar */}
-          <aside className="lg:w-72 xl:w-80 space-y-5">
-            {/* Player box (desktop) */}
-            {playerBox && (
-              <div className="hidden lg:flex justify-center">
-                <PlayerBoxDisplay box={playerBox} phase={state.phase} />
-              </div>
-            )}
-
-            {/* Value board — EV is shown inside it */}
-            <div className="rounded-xl border border-white/12 bg-white/5 p-4">
-              <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
+          {/* Desktop: player box to the right of the grid */}
+          {playerBox && (
+            <div className="hidden lg:flex flex-col items-center gap-3 pt-10">
+              <PlayerBoxDisplay box={playerBox} phase={state.phase} />
             </div>
-          </aside>
+          )}
+        </div>
+
+        {/* Eliminated zone — full width */}
+        <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
+
+        {/* Board — full width */}
+        <div className="rounded-xl border border-white/12 bg-white/5 p-4">
+          <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
         </div>
       </div>
 
