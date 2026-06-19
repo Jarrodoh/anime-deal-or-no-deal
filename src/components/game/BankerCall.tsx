@@ -9,9 +9,9 @@ interface BankerCallProps {
 }
 
 const CALL_STAGES = [
-  { label: 'Incoming call from the Banker...', duration: 1200 },
-  { label: 'The Banker is evaluating your board...', duration: 1500 },
-  { label: 'An offer is being prepared...', duration: 1200 },
+  { label: 'Incoming call from the Banker...', duration: 2200 },
+  { label: 'The Banker is evaluating your board...', duration: 2800 },
+  { label: 'An offer is being prepared...', duration: 2800 },
 ];
 
 export default function BankerCall({ onCallComplete }: BankerCallProps) {
@@ -25,7 +25,7 @@ export default function BankerCall({ onCallComplete }: BankerCallProps) {
       setStage(s => {
         const next = s + 1;
         if (next >= CALL_STAGES.length) {
-          timeout = setTimeout(onCallComplete, 600);
+          timeout = setTimeout(onCallComplete, 1200);
           return s;
         }
         timeout = setTimeout(advance, CALL_STAGES[next].duration);
