@@ -2,8 +2,12 @@ import { Box, GameState, GamePhase, Anime, ROUND_CONFIGS } from '@/types';
 import { getDailyBoxAssignment, getTodayString } from './daily-seed';
 import { calculateBankerOffer, getBoxesForRound } from './banker-algorithm';
 
+function randomSeed(): string {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+}
+
 export function initGameState(dateStr?: string): GameState {
-  const seed = dateStr ?? getTodayString();
+  const seed = dateStr ?? randomSeed();
   const assignment = getDailyBoxAssignment(seed);
 
   const boxes: Box[] = Object.entries(assignment).map(([id, anime]) => ({

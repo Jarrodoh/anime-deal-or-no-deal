@@ -7,6 +7,7 @@ import RatingMeter from './RatingMeter';
 
 interface AnimeValueBoardProps {
   openedAnime: Anime[];
+  seed?: string;
 }
 
 function BriefcaseClosed({ color }: { color: string }) {
@@ -29,8 +30,8 @@ function BriefcaseOpen() {
   );
 }
 
-export default function AnimeValueBoard({ openedAnime }: AnimeValueBoardProps) {
-  const todayBoxes = getDailyBoxes();
+export default function AnimeValueBoard({ openedAnime, seed }: AnimeValueBoardProps) {
+  const todayBoxes = getDailyBoxes(seed);
   const openedIds = new Set(openedAnime.map(a => a.id));
 
   const sorted = [...todayBoxes].sort((a, b) => b.rating - a.rating);

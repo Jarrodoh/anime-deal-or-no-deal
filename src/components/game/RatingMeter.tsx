@@ -99,24 +99,19 @@ export default function RatingMeter({ value }: RatingMeterProps) {
 
         {/* Animated pointer arrow */}
         <motion.div
-          className="absolute right-6 flex items-center gap-0.5"
-          animate={{ bottom: 'calc(' + fillPct + '% - 8px)' }}
-          initial={{ bottom: 'calc(' + fillPct + '% - 8px)' }}
+          className="absolute flex items-center"
+          style={{ right: 22 }}
+          animate={{ bottom: 'calc(' + fillPct + '% - 5px)' }}
+          initial={{ bottom: 'calc(' + fillPct + '% - 5px)' }}
           transition={{ duration: 0.9, ease: 'easeInOut' }}
         >
-          <span
-            className="text-[10px] font-black tabular-nums whitespace-nowrap"
-            style={{ color }}
-          >
-            {value.toFixed(1)}
-          </span>
-          {/* Arrow pointing right toward the bar */}
           <div
-            className="w-0 h-0 flex-shrink-0"
+            className="w-0 h-0"
             style={{
               borderTop: '5px solid transparent',
               borderBottom: '5px solid transparent',
-              borderLeft: `6px solid ${color}`,
+              borderLeft: `7px solid ${color}`,
+              filter: `drop-shadow(0 0 4px ${color})`,
             }}
           />
         </motion.div>

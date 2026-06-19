@@ -242,7 +242,7 @@ export default function GamePage() {
 
             {/* Value board — EV is shown inside it */}
             <div className="rounded-xl border border-white/12 bg-white/5 p-4">
-              <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} />
+              <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
             </div>
           </aside>
         </div>
