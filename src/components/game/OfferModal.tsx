@@ -33,7 +33,7 @@ export default function OfferModal({ offer, onDeal, onNoDeal, isFinalSwap = fals
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(8, 13, 26, 0.92)', backdropFilter: 'blur(8px)' }}
+      style={{ background: 'rgba(14, 27, 46, 0.93)', backdropFilter: 'blur(8px)' }}
     >
       <motion.div
         initial={{ scale: 0.85, y: 30 }}
@@ -42,7 +42,7 @@ export default function OfferModal({ offer, onDeal, onNoDeal, isFinalSwap = fals
         className="w-full max-w-md rounded-2xl border overflow-hidden"
         style={{
           borderColor: tierColor + '40',
-          background: 'linear-gradient(160deg, #0f1628 0%, #151f35 100%)',
+          background: 'linear-gradient(160deg, #172436 0%, #1e2f48 100%)',
           boxShadow: `0 0 40px ${tierColor}20, 0 0 80px rgba(0,0,0,0.8)`,
         }}
       >

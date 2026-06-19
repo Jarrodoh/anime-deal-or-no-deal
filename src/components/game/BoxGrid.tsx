@@ -116,9 +116,12 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
     onSelectBox(boxId);
   }
 
+  // Only show boxes still in play (not yet opened). Opened boxes go to EliminatedPanel.
+  const activeBoxes = boxes.filter(b => !b.isOpen);
+
   return (
     <div className="grid grid-cols-3 gap-3 sm:gap-4">
-      {boxes.map(box => {
+      {activeBoxes.map(box => {
         const isPlayer = box.id === playerBoxId;
         const isOpen = box.isOpen;
         const isSpinning = spinningBoxId === box.id;
@@ -194,7 +197,7 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
                   />
                   <div
                     className="absolute inset-x-0 bottom-0 flex flex-col items-start justify-end px-2 pb-2 pt-8"
-                    style={{ background: 'linear-gradient(to top, rgba(8,13,26,0.97) 0%, transparent 100%)' }}
+                    style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.97) 0%, transparent 100%)' }}
                   >
                     <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-1 tier-' + box.anime.tier)}>
                       {box.anime.tier}

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/hooks/useGame';
 import BoxGrid from '@/components/game/BoxGrid';
 import AnimeValueBoard from '@/components/game/AnimeValueBoard';
+import EliminatedPanel from '@/components/game/EliminatedPanel';
 import BankerCall from '@/components/game/BankerCall';
 import OfferModal from '@/components/game/OfferModal';
 import ResultScreen from '@/components/game/ResultScreen';
@@ -121,7 +122,7 @@ export default function GamePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-20 px-4 py-3 border-b border-white/6" style={{ background: 'rgba(8,13,26,0.95)', backdropFilter: 'blur(12px)' }}>
+      <header className="sticky top-0 z-20 px-4 py-3 border-b border-white/6" style={{ background: 'rgba(14,27,46,0.96)', backdropFilter: 'blur(12px)' }}>
         <div className="max-w-6xl mx-auto flex items-center gap-4">
           <Link href="/" className="text-white/40 hover:text-white/80 transition-colors">
             <ChevronLeft className="w-5 h-5" />
@@ -174,13 +175,16 @@ export default function GamePage() {
               )}
             </AnimatePresence>
 
-            {/* Box grid */}
+            {/* Box grid — only active (non-opened) boxes */}
             <BoxGrid
               boxes={state.boxes}
               playerBoxId={state.playerBoxId}
               phase={state.phase}
               onSelectBox={state.phase === 'pick_box' ? pickBox : handleBoxOpen}
             />
+
+            {/* Eliminated zone */}
+            <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
 
             {/* Player box display (mobile) */}
             {playerBox && (
@@ -237,7 +241,7 @@ export default function GamePage() {
             )}
 
             {/* Value board — EV is shown inside it */}
-            <div className="rounded-xl border border-white/10 bg-white/3 p-4">
+            <div className="rounded-xl border border-white/12 bg-white/5 p-4">
               <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} />
             </div>
           </aside>
@@ -253,7 +257,7 @@ export default function GamePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 flex items-center justify-center"
-            style={{ background: 'rgba(8,13,26,0.92)', backdropFilter: 'blur(8px)' }}
+            style={{ background: 'rgba(14,27,46,0.92)', backdropFilter: 'blur(8px)' }}
           >
             <BankerCall onCallComplete={handleBankerCallComplete} />
           </motion.div>

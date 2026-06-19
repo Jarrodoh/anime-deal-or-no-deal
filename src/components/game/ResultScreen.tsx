@@ -119,7 +119,7 @@ export default function ResultScreen({ state, playerName, onPlayAgain, onSaveSco
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
-      style={{ background: 'rgba(8, 13, 26, 0.97)' }}
+      style={{ background: 'rgba(14, 27, 46, 0.97)' }}
     >
       <div className="w-full max-w-lg py-8">
         {/* Trophy + result header */}
