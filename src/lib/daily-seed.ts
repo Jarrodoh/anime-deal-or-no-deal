@@ -27,18 +27,15 @@ export function getTodayString(): string {
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
-// Guaranteed tier distribution for the 26 daily boxes:
-// 2 S, 6 A-high (8.5+), 5 A-mid (8.0–8.4), 5 B-high (7.5–7.9), 4 B-mid (7.0–7.4), 2 C, 1 D, 1 F
-// This mirrors the spread of a real DoND board (few jackpots, many mid, some low).
+// Guaranteed tier distribution for the 9 daily boxes:
+// 1 S (jackpot), 2 A-high, 2 A-mid, 2 B, 1 C, 1 D/F (booby prize).
 const TIER_DISTRIBUTION: { tiers: AnimeTier[]; ratingMin?: number; ratingMax?: number; count: number }[] = [
-  { tiers: ['S'], count: 2 },
-  { tiers: ['A'], ratingMin: 8.5, count: 6 },
-  { tiers: ['A'], ratingMax: 8.49, count: 5 },
-  { tiers: ['B'], ratingMin: 7.5, count: 5 },
-  { tiers: ['B'], ratingMax: 7.49, count: 4 },
-  { tiers: ['C'], count: 2 },
-  { tiers: ['D'], count: 1 },
-  { tiers: ['F'], count: 1 },
+  { tiers: ['S'], count: 1 },
+  { tiers: ['A'], ratingMin: 8.5, count: 2 },
+  { tiers: ['A'], ratingMax: 8.49, count: 2 },
+  { tiers: ['B'], count: 2 },
+  { tiers: ['C'], count: 1 },
+  { tiers: ['D', 'F'], count: 1 },
 ];
 
 function filterByRating(anime: Anime[], min?: number, max?: number): Anime[] {
@@ -78,7 +75,6 @@ export function getDailyBoxes(dateStr?: string): Anime[] {
     });
   }
 
-  // Shuffle the final 26 so tier order isn't predictable from box position
   return pickN(selected, selected.length, rand);
 }
 

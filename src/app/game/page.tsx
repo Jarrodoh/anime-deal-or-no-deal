@@ -81,7 +81,7 @@ export default function GamePage() {
               <span className="shimmer-gold">Anime</span> Deal or No Deal
             </h1>
             <p className="text-white/50 text-sm">
-              26 boxes. 26 anime. One you walk away with.
+              9 boxes. 9 anime. One you walk away with.
             </p>
             <p className="text-white/30 text-xs mt-1">
               Daily board: {today}
@@ -228,7 +228,7 @@ export default function GamePage() {
           </div>
 
           {/* Sidebar */}
-          <aside className="lg:w-52 xl:w-56 space-y-5">
+          <aside className="lg:w-60 xl:w-64 space-y-5">
             {/* Player box (desktop) */}
             {playerBox && (
               <div className="hidden lg:flex justify-center">

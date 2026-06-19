@@ -3,8 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GameState, Anime, TIER_COLORS, TIER_LABELS } from '@/types';
-import { Star, RefreshCw, Trophy, Clock, TrendingUp } from 'lucide-react';
+import { Star, RefreshCw, Trophy } from 'lucide-react';
 import { getPlayerBox } from '@/lib/game-logic';
+import { ANILIST_IDS } from '@/lib/anilist-ids';
+import AnimeImage from './AnimeImage';
 import { clsx } from 'clsx';
 
 interface ResultScreenProps {
@@ -150,42 +152,53 @@ export default function ResultScreen({ state, playerName, onPlayAgain, onSaveSco
           initial={{ scale: 0.9, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.2, type: 'spring', stiffness: 200, damping: 20 }}
-          className="rounded-2xl border p-5 mb-4"
+          className="rounded-2xl border overflow-hidden mb-4"
           style={{
             borderColor: tierColor + '40',
             background: `linear-gradient(135deg, ${tierColor}05 0%, rgba(15,22,40,1) 100%)`,
             boxShadow: `0 0 40px ${tierColor}15`,
           }}
         >
-          <div className="flex items-start justify-between mb-3">
-            <span className={clsx('text-sm font-black border rounded-lg px-3 py-1 tier-' + finalAnime.tier)}>
-              {finalAnime.tier} — {TIER_LABELS[finalAnime.tier]}
-            </span>
-            <div className="flex items-center gap-1.5">
-              <Star className="w-4 h-4" style={{ color: tierColor }} />
-              <span className="text-2xl font-black" style={{ color: tierColor }}>
-                {finalAnime.rating.toFixed(1)}
-              </span>
-              <span className="text-white/40 text-sm">/10</span>
+          <div className="flex gap-4 p-5">
+            {/* Cover art */}
+            <AnimeImage
+              anilistId={ANILIST_IDS[finalAnime.id]}
+              title={finalAnime.title}
+              className="flex-shrink-0 w-28 h-40 rounded-xl"
+            />
+
+            {/* Info */}
+            <div className="flex flex-col justify-between min-w-0">
+              <div>
+                <div className="flex items-center justify-between mb-2 gap-2 flex-wrap">
+                  <span className={clsx('text-sm font-black border rounded-lg px-3 py-1 tier-' + finalAnime.tier)}>
+                    {finalAnime.tier} — {TIER_LABELS[finalAnime.tier]}
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <Star className="w-4 h-4" style={{ color: tierColor }} />
+                    <span className="text-2xl font-black" style={{ color: tierColor }}>
+                      {finalAnime.rating.toFixed(1)}
+                    </span>
+                    <span className="text-white/40 text-sm">/10</span>
+                  </div>
+                </div>
+                <h3 className="text-lg font-black text-white mb-2 leading-tight">
+                  {finalAnime.title}
+                </h3>
+                <p className="text-white/60 text-xs leading-relaxed mb-2 line-clamp-4">
+                  {finalAnime.description}
+                </p>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-white/30">
+                <span>{finalAnime.year}</span>
+                <span>•</span>
+                <span>{finalAnime.studio}</span>
+              </div>
             </div>
           </div>
 
-          <h3 className="text-xl font-black text-white mb-2 leading-tight">
-            {finalAnime.title}
-          </h3>
-          <p className="text-white/60 text-sm leading-relaxed mb-3">
-            {finalAnime.description}
-          </p>
-          <div className="flex items-center gap-3 text-xs text-white/40">
-            <span>{finalAnime.year}</span>
-            <span>•</span>
-            <span>{finalAnime.studio}</span>
-            <span>•</span>
-            <span>{finalAnime.genre}</span>
-          </div>
-
           {/* Result comment */}
-          <p className="mt-4 text-sm italic text-white/50 border-t border-white/5 pt-3">
+          <p className="px-5 pb-4 text-sm italic text-white/50 border-t border-white/5 pt-3">
             {comment}
           </p>
         </motion.div>

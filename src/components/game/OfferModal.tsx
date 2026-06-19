@@ -2,7 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { BankerOffer, TIER_COLORS } from '@/types';
+import { ANILIST_IDS } from '@/lib/anilist-ids';
 import { Star, TrendingUp, AlertTriangle } from 'lucide-react';
+import AnimeImage from './AnimeImage';
 import { clsx } from 'clsx';
 
 interface OfferModalProps {
@@ -72,38 +74,44 @@ export default function OfferModal({ offer, onDeal, onNoDeal, isFinalSwap = fals
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.15 }}
-            className="rounded-xl p-4 border mb-4"
-            style={{
-              borderColor: tierColor + '30',
-              background: tierColor + '08',
-            }}
+            className="rounded-xl border mb-4 overflow-hidden"
+            style={{ borderColor: tierColor + '30', background: tierColor + '08' }}
           >
-            <div className="flex items-start justify-between mb-2">
-              <span
-                className={clsx('text-xs font-black border rounded px-2 py-0.5 tier-' + offer.anime.tier)}
-              >
-                {offer.anime.tier}-TIER
-              </span>
-              <div className="flex items-center gap-1">
-                <Star className="w-3.5 h-3.5" style={{ color: tierColor }} />
-                <span className="font-bold text-lg" style={{ color: tierColor }}>
-                  {offer.anime.rating.toFixed(1)}
-                </span>
-              </div>
-            </div>
+            <div className="flex gap-3 p-4">
+              {/* Cover art */}
+              <AnimeImage
+                anilistId={ANILIST_IDS[offer.anime.id]}
+                title={offer.anime.title}
+                className="flex-shrink-0 w-20 h-28 rounded-lg"
+              />
 
-            <h3 className="text-white font-bold text-lg leading-tight mb-1">
-              {offer.anime.title}
-            </h3>
-            <p className="text-white/50 text-xs leading-relaxed">
-              {offer.anime.description}
-            </p>
-            <div className="flex items-center gap-3 mt-3 text-xs text-white/40">
-              <span>{offer.anime.year}</span>
-              <span>•</span>
-              <span>{offer.anime.studio}</span>
-              <span>•</span>
-              <span>{offer.anime.genre}</span>
+              {/* Details */}
+              <div className="flex flex-col justify-between min-w-0">
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <span className={clsx('text-xs font-black border rounded px-2 py-0.5 tier-' + offer.anime.tier)}>
+                      {offer.anime.tier}-TIER
+                    </span>
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5" style={{ color: tierColor }} />
+                      <span className="font-bold text-xl" style={{ color: tierColor }}>
+                        {offer.anime.rating.toFixed(1)}
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="text-white font-bold text-base leading-tight mb-1">
+                    {offer.anime.title}
+                  </h3>
+                  <p className="text-white/50 text-xs leading-relaxed line-clamp-3">
+                    {offer.anime.description}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs text-white/30 mt-2">
+                  <span>{offer.anime.year}</span>
+                  <span>•</span>
+                  <span>{offer.anime.studio}</span>
+                </div>
+              </div>
             </div>
           </motion.div>
 

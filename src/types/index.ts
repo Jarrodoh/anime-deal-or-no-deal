@@ -117,16 +117,13 @@ export interface PartyParticipant {
   joined_at: string;
 }
 
+// 9 boxes total: player picks 1, 8 on board.
+// Open 3+2+1+1 = 7 board boxes across 4 rounds → 1 board box left for final swap.
 export const ROUND_CONFIGS: RoundConfig[] = [
-  { round: 1, boxesToOpen: 6 },
-  { round: 2, boxesToOpen: 5 },
-  { round: 3, boxesToOpen: 4 },
-  { round: 4, boxesToOpen: 3 },
-  { round: 5, boxesToOpen: 2 },
-  { round: 6, boxesToOpen: 1 },
-  { round: 7, boxesToOpen: 1 },
-  { round: 8, boxesToOpen: 1 },
-  { round: 9, boxesToOpen: 1 },
+  { round: 1, boxesToOpen: 3 },
+  { round: 2, boxesToOpen: 2 },
+  { round: 3, boxesToOpen: 1 },
+  { round: 4, boxesToOpen: 1 },
 ];
 
 export const TIER_COLORS: Record<AnimeTier, string> = {
