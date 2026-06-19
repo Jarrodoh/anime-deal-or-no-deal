@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Anime, AnimeTier, TIER_COLORS, TIER_LABELS } from '@/types';
-import { BOX_ANIME } from '@/lib/anime-data';
+import { getDailyBoxes } from '@/lib/daily-seed';
 import { clsx } from 'clsx';
 
 interface AnimeValueBoardProps {
@@ -17,12 +17,9 @@ function groupByTier(anime: Anime[]): Record<AnimeTier, Anime[]> {
   return result;
 }
 
-function allByTier(): Record<AnimeTier, Anime[]> {
-  return groupByTier(BOX_ANIME);
-}
-
 export default function AnimeValueBoard({ openedAnime }: AnimeValueBoardProps) {
-  const allGroups = allByTier();
+  const todayBoxes = getDailyBoxes();
+  const allGroups = groupByTier(todayBoxes);
   const openedTitles = new Set(openedAnime.map(a => a.id));
 
   return (

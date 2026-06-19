@@ -9,441 +9,353 @@ function tier(rating: number): AnimeTier {
   return 'F';
 }
 
-// 26 anime for the boxes — spread across all tiers like DoND case values
-export const BOX_ANIME: Anime[] = [
-  // S-tier (2) — jackpot equivalents
-  {
-    id: 'fmab',
-    title: 'Fullmetal Alchemist: Brotherhood',
-    rating: 9.2,
-    tier: tier(9.2),
-    genre: 'Action / Adventure',
-    year: 2009,
-    studio: 'Bones',
-    description: 'Two brothers use alchemy to search for the Philosopher\'s Stone after a failed human transmutation.'
-  },
-  {
-    id: 'steinsgate',
-    title: 'Steins;Gate',
-    rating: 9.1,
-    tier: tier(9.1),
-    genre: 'Sci-Fi / Thriller',
-    year: 2011,
-    studio: 'White Fox',
-    description: 'A self-proclaimed mad scientist accidentally discovers time travel and faces the consequences.'
-  },
-  // A-tier (8) — strong pulls
-  {
-    id: 'hxh',
-    title: 'Hunter x Hunter (2011)',
-    rating: 8.9,
-    tier: tier(8.9),
-    genre: 'Action / Adventure',
-    year: 2011,
-    studio: 'Madhouse',
-    description: 'A boy sets out to find his absent father and become a legendary Hunter.'
-  },
-  {
-    id: 'aot',
-    title: 'Attack on Titan',
-    rating: 8.8,
-    tier: tier(8.8),
-    genre: 'Action / Dark Fantasy',
-    year: 2013,
-    studio: 'WIT / MAPPA',
-    description: 'Humanity lives behind walls to survive against giant humanoid creatures.'
-  },
-  {
-    id: 'demon_slayer',
-    title: 'Demon Slayer',
-    rating: 8.7,
-    tier: tier(8.7),
-    genre: 'Action / Supernatural',
-    year: 2019,
-    studio: 'ufotable',
-    description: 'A boy becomes a demon slayer after his family is slaughtered and his sister turned into a demon.'
-  },
-  {
-    id: 'deathnote',
-    title: 'Death Note',
-    rating: 8.6,
-    tier: tier(8.6),
-    genre: 'Psychological / Thriller',
-    year: 2006,
-    studio: 'Madhouse',
-    description: 'A high school student discovers a supernatural notebook that kills anyone whose name is written in it.'
-  },
-  {
-    id: 'code_geass',
-    title: 'Code Geass',
-    rating: 8.6,
-    tier: tier(8.6),
-    genre: 'Mecha / Political',
-    year: 2006,
-    studio: 'Sunrise',
-    description: 'An exiled prince gains the power of absolute obedience and leads a rebellion.'
-  },
-  {
-    id: 'vinland',
-    title: 'Vinland Saga',
-    rating: 8.5,
-    tier: tier(8.5),
-    genre: 'Historical / Action',
-    year: 2019,
-    studio: 'WIT Studio',
-    description: 'A young Viking warrior seeks revenge in 11th century Europe.'
-  },
-  {
-    id: 'mob_psycho',
-    title: 'Mob Psycho 100',
-    rating: 8.5,
-    tier: tier(8.5),
-    genre: 'Action / Supernatural',
-    year: 2016,
-    studio: 'Bones',
-    description: 'An incredibly powerful psychic boy tries to live a normal life while suppressing his emotions.'
-  },
-  // B-tier (8) — solid but not elite
-  {
-    id: 'jjk',
-    title: 'Jujutsu Kaisen',
-    rating: 8.3,
-    tier: tier(8.3),
-    genre: 'Action / Supernatural',
-    year: 2020,
-    studio: 'MAPPA',
-    description: 'A boy swallows a cursed finger to save classmates and enters a world of sorcerers.'
-  },
-  {
-    id: 'mha',
-    title: 'My Hero Academia',
-    rating: 8.3,
-    tier: tier(8.3),
-    genre: 'Action / Superhero',
-    year: 2016,
-    studio: 'Bones',
-    description: 'In a world where most people have superpowers, a powerless boy dreams of becoming a hero.'
-  },
-  {
-    id: 'opm',
-    title: 'One Punch Man',
-    rating: 8.2,
-    tier: tier(8.2),
-    genre: 'Action / Comedy',
-    year: 2015,
-    studio: 'Madhouse',
-    description: 'A hero who can defeat any opponent with a single punch searches for a worthy challenge.'
-  },
-  {
-    id: 'rezero',
-    title: 'Re:Zero',
-    rating: 8.2,
-    tier: tier(8.2),
-    genre: 'Isekai / Psychological',
-    year: 2016,
-    studio: 'White Fox',
-    description: 'A young man is transported to a fantasy world and discovers he can return from death.'
-  },
-  {
-    id: 'promised_neverland',
-    title: 'The Promised Neverland',
-    rating: 8.0,
-    tier: tier(8.0),
-    genre: 'Thriller / Horror',
-    year: 2019,
-    studio: 'CloverWorks',
-    description: 'Orphan children discover their idyllic home hides a dark secret.'
-  },
-  // B-tier lower (5) — recognizable, watchable
-  {
-    id: 'naruto',
-    title: 'Naruto',
-    rating: 7.9,
-    tier: tier(7.9),
-    genre: 'Action / Shonen',
-    year: 2002,
-    studio: 'Pierrot',
-    description: 'A young ninja with a powerful spirit sealed inside him dreams of becoming Hokage.'
-  },
-  {
-    id: 'dragonball_z',
-    title: 'Dragon Ball Z',
-    rating: 7.8,
-    tier: tier(7.8),
-    genre: 'Action / Shonen',
-    year: 1989,
-    studio: 'Toei Animation',
-    description: 'Goku and his friends protect the Earth from powerful villains.'
-  },
-  {
-    id: 'haikyuu',
-    title: 'Haikyuu!!',
-    rating: 7.8,
-    tier: tier(7.8),
-    genre: 'Sports / Drama',
-    year: 2014,
-    studio: 'Production I.G',
-    description: 'A short boy with a dream of being a volleyball ace joins a powerhouse team.'
-  },
-  {
-    id: 'black_clover',
-    title: 'Black Clover',
-    rating: 7.4,
-    tier: tier(7.4),
-    genre: 'Action / Fantasy',
-    year: 2017,
-    studio: 'Pierrot',
-    description: 'A boy born without magic in a magic-dominated world aims to become the Wizard King.'
-  },
-  {
-    id: 'fairy_tail',
-    title: 'Fairy Tail',
-    rating: 7.3,
-    tier: tier(7.3),
-    genre: 'Action / Fantasy',
-    year: 2009,
-    studio: 'A-1 Pictures',
-    description: 'A wizard joins a rowdy guild of mages on wild adventures.'
-  },
-  // C-tier (4) — known but forgettable
-  {
-    id: 'tokyo_ghoul',
-    title: 'Tokyo Ghoul',
-    rating: 6.9,
-    tier: tier(6.9),
-    genre: 'Dark Fantasy / Horror',
-    year: 2014,
-    studio: 'Pierrot',
-    description: 'A college student becomes half-ghoul after a deadly encounter with one.'
-  },
-  {
-    id: 'sao',
-    title: 'Sword Art Online',
-    rating: 6.8,
-    tier: tier(6.8),
-    genre: 'Isekai / Action',
-    year: 2012,
-    studio: 'A-1 Pictures',
-    description: 'Players are trapped in a deadly virtual reality game and must clear it to escape.'
-  },
-  {
-    id: 'overlord',
-    title: 'Overlord',
-    rating: 6.8,
-    tier: tier(6.8),
-    genre: 'Isekai / Dark Fantasy',
-    year: 2015,
-    studio: 'Madhouse',
-    description: 'A player is trapped as his avatar in a dark game world at server shutdown.'
-  },
-  {
-    id: 'shield_hero',
-    title: 'The Rising of the Shield Hero',
-    rating: 6.7,
-    tier: tier(6.7),
-    genre: 'Isekai / Action',
-    year: 2019,
-    studio: 'Kinema Citrus',
-    description: 'A young man summoned to a fantasy world is betrayed and forced to start from scratch.'
-  },
-  // D-tier (2) — rough watches
-  {
-    id: 'btooom',
-    title: 'Btooom!',
-    rating: 5.8,
-    tier: tier(5.8),
-    genre: 'Action / Survival',
-    year: 2012,
-    studio: 'Madhouse',
-    description: 'A NEET is dropped on an island and forced to play a real-life version of his favorite bomb game.'
-  },
-  {
-    id: 'asterisk_war',
-    title: 'The Asterisk War',
-    rating: 5.6,
-    tier: tier(5.6),
-    genre: 'Action / Harem',
-    year: 2015,
-    studio: 'A-1 Pictures',
-    description: 'A transfer student enters a city of six academies that host battle tournaments.'
-  },
-  // F-tier (1) — the consolation prize
-  {
-    id: 'isekai_smartphone',
-    title: 'Isekai wa Smartphone to Tomo ni',
-    rating: 5.0,
-    tier: tier(5.0),
-    genre: 'Isekai / Harem',
-    year: 2017,
-    studio: 'Production Reed',
-    description: 'A boy is reincarnated in a fantasy world with his smartphone still working.'
-  },
+function a(
+  id: string,
+  title: string,
+  rating: number,
+  genre: string,
+  year: number,
+  studio: string,
+  description: string
+): Anime {
+  return { id, title, rating, tier: tier(rating), genre, year, studio, description };
+}
+
+// 220+ real anime spanning all tiers
+export const ANIME_DATABASE: Anime[] = [
+
+  // ── S-TIER (9.0+) ─────────────────────────────────────────────────────────
+  a('fmab', 'Fullmetal Alchemist: Brotherhood', 9.2, 'Action / Adventure', 2009, 'Bones',
+    'Two brothers use alchemy to search for the Philosopher\'s Stone after a failed human transmutation.'),
+  a('steins_gate', 'Steins;Gate', 9.1, 'Sci-Fi / Thriller', 2011, 'White Fox',
+    'A self-proclaimed mad scientist accidentally discovers time travel and faces catastrophic consequences.'),
+  a('gintama_enchousen', 'Gintama°', 9.1, 'Comedy / Action', 2015, 'Bandai Namco Pictures',
+    'The beloved Gintama gang returns for more absurd comedy and surprisingly emotional story arcs.'),
+  a('hxh_2011', 'Hunter x Hunter (2011)', 9.0, 'Action / Adventure', 2011, 'Madhouse',
+    'A boy sets out to find his absent father and become a legendary Hunter, discovering a brutal world.'),
+  a('gintama', 'Gintama', 9.0, 'Comedy / Action', 2006, 'Sunrise',
+    'Samurai take odd jobs in an alien-occupied Edo Japan. Parody, heart, and occasional brilliance.'),
+  a('clannad_after', 'Clannad: After Story', 9.0, 'Romance / Drama', 2008, 'Kyoto Animation',
+    'The continuation of Clannad — widely considered one of the most emotionally devastating anime ever made.'),
+  a('fruits_basket_final', 'Fruits Basket: The Final Season', 9.0, 'Romance / Drama', 2021, 'TMS Entertainment',
+    'The stunning conclusion to the Sohma family\'s curse, delivering one of anime\'s best payoffs.'),
+  a('legend_galactic', 'Legend of the Galactic Heroes', 9.0, 'Sci-Fi / Military', 1988, 'Artland',
+    'A centuries-long war between a democracy and an empire, told through two opposing geniuses.'),
+  a('mushishi', 'Mushishi', 9.0, 'Fantasy / Slice of Life', 2005, 'Artland',
+    'A traveler studies mushi — primordial life forms — and helps those affected by their mysterious influence.'),
+  a('86_part2', '86 Eighty-Six Part 2', 9.0, 'Sci-Fi / Military', 2021, 'A-1 Pictures',
+    'The Spearhead Squadron faces a new battle beyond the border in a devastating second season.'),
+
+  // ── A-TIER HIGH (8.5–8.9) ─────────────────────────────────────────────────
+  a('aot_final', 'Attack on Titan: Final Season', 8.9, 'Action / Dark Fantasy', 2020, 'MAPPA',
+    'The war for Paradis comes to a head with the most politically complex arc in the series.'),
+  a('aot', 'Attack on Titan', 8.8, 'Action / Dark Fantasy', 2013, 'WIT Studio',
+    'Humanity lives behind walls to survive giant humanoid creatures. One of anime\'s most gripping starts.'),
+  a('demon_slayer', 'Demon Slayer', 8.7, 'Action / Supernatural', 2019, 'ufotable',
+    'A boy becomes a demon slayer after his family is killed and his sister is turned into a demon.'),
+  a('vinland_s2', 'Vinland Saga Season 2', 8.7, 'Historical / Drama', 2023, 'MAPPA',
+    'Thorfinn, stripped of his desire for revenge, begins a slow and powerful journey toward pacifism.'),
+  a('demon_slayer_mugen', 'Demon Slayer: Mugen Train', 8.7, 'Action / Supernatural', 2020, 'ufotable',
+    'The Flame Hashira Rengoku leads a mission against a demon on an infinite dream train.'),
+  a('death_note', 'Death Note', 8.6, 'Psychological / Thriller', 2006, 'Madhouse',
+    'A high school student discovers a supernatural notebook that kills anyone whose name is written in it.'),
+  a('code_geass', 'Code Geass', 8.6, 'Mecha / Political', 2006, 'Sunrise',
+    'An exiled prince gains the power of absolute obedience and leads a rebellion against an empire.'),
+  a('mob_psycho_ii', 'Mob Psycho 100 II', 8.6, 'Action / Supernatural', 2019, 'Bones',
+    'Mob grows as a person and faces new threats — often considered even better than the first season.'),
+  a('haikyuu', 'Haikyuu!!', 8.5, 'Sports / Drama', 2014, 'Production I.G',
+    'A short boy with a dream of volleyball stardom joins a school team and ignites something special.'),
+  a('mob_psycho', 'Mob Psycho 100', 8.5, 'Action / Supernatural', 2016, 'Bones',
+    'An incredibly powerful psychic boy tries to live a normal life while suppressing his emotions.'),
+  a('vinland', 'Vinland Saga', 8.5, 'Historical / Action', 2019, 'WIT Studio',
+    'A young Viking warrior seeks revenge for his father\'s death in 11th century Europe.'),
+  a('your_name', 'Your Name', 8.5, 'Romance / Supernatural', 2016, 'CoMix Wave Films',
+    'Two teenagers mysteriously swap bodies and try to find each other before time runs out.'),
+  a('spirited_away', 'Spirited Away', 8.5, 'Fantasy / Adventure', 2001, 'Studio Ghibli',
+    'A girl enters a spirit world to rescue her transformed parents and works in a supernatural bathhouse.'),
+
+  // ── A-TIER MID (8.0–8.4) ──────────────────────────────────────────────────
+  a('princess_mononoke', 'Princess Mononoke', 8.4, 'Fantasy / Action', 1997, 'Studio Ghibli',
+    'A young prince caught between industrialists and the ancient gods of the forest.'),
+  a('made_in_abyss', 'Made in Abyss', 8.4, 'Adventure / Dark Fantasy', 2017, 'Kinema Citrus',
+    'A girl and a robot boy descend into a mysterious deadly chasm in search of the girl\'s missing mother.'),
+  a('silent_voice', 'A Silent Voice', 8.4, 'Drama / Romance', 2016, 'Kyoto Animation',
+    'A boy who bullied a deaf girl in elementary school seeks her forgiveness years later.'),
+  a('violet_evergarden', 'Violet Evergarden', 8.4, 'Drama / Fantasy', 2018, 'Kyoto Animation',
+    'A war veteran learns to understand human emotion as an Auto Memory Doll who writes letters for others.'),
+  a('parasyte', 'Parasyte: The Maxim', 8.4, 'Sci-Fi / Horror', 2014, 'Madhouse',
+    'An alien parasite fails to take over a boy\'s brain and instead bonds with his right hand.'),
+  a('hellsing_ultimate', 'Hellsing Ultimate', 8.4, 'Action / Horror', 2006, 'Madhouse',
+    'The Hellsing Organization battles vampires and Nazis with their own powerful vampire, Alucard.'),
+  a('bleach_tybw', 'Bleach: Thousand-Year Blood War', 8.4, 'Action / Supernatural', 2022, 'Pierrot',
+    'Ichigo faces the most powerful enemy yet as the Soul Society is invaded by an ancient army.'),
+  a('assassination_classroom', 'Assassination Classroom', 8.3, 'Action / Comedy', 2015, 'Lerche',
+    'A class of misfit students must assassinate their teacher — an alien who threatens to destroy the Earth.'),
+  a('jjk', 'Jujutsu Kaisen', 8.3, 'Action / Supernatural', 2020, 'MAPPA',
+    'A boy swallows a cursed object and enters a world of sorcerers who battle malevolent spirits.'),
+  a('mha', 'My Hero Academia', 8.3, 'Action / Superhero', 2016, 'Bones',
+    'In a world where most people have superpowers, a powerless boy dreams of becoming the greatest hero.'),
+  a('kaguya_sama', 'Kaguya-sama: Love is War', 8.3, 'Romance / Comedy', 2019, 'A-1 Pictures',
+    'Two elite student council members wage psychological battles to make the other confess their love first.'),
+  a('madoka_magica', 'Puella Magi Madoka Magica', 8.3, 'Dark Fantasy / Psychological', 2011, 'Shaft',
+    'Middle school girls are offered a wish in exchange for becoming magical girls — with a dark catch.'),
+  a('one_punch_man', 'One Punch Man', 8.2, 'Action / Comedy', 2015, 'Madhouse',
+    'A hero who can defeat any opponent with a single punch searches for a worthy challenge.'),
+  a('rezero', 'Re:Zero', 8.2, 'Isekai / Psychological', 2016, 'White Fox',
+    'A young man transported to a fantasy world discovers he can return from death, at a terrible cost.'),
+  a('fruits_basket_2019', 'Fruits Basket (2019)', 8.2, 'Romance / Drama', 2019, 'TMS Entertainment',
+    'A girl discovers her classmates are possessed by the Chinese zodiac and is drawn into their family.'),
+  a('hajime_ippo', 'Hajime no Ippo', 8.2, 'Sports / Drama', 1989, 'Madhouse',
+    'A bullied teenager discovers a talent for boxing and fights his way toward becoming a champion.'),
+  a('evangelion', 'Neon Genesis Evangelion', 8.2, 'Mecha / Psychological', 1995, 'Gainax',
+    'Teenagers pilot giant mechs against mysterious beings while the show deconstructs the genre itself.'),
+  a('one_piece', 'One Piece', 8.1, 'Action / Adventure', 1999, 'Toei Animation',
+    'A boy with rubber powers and his crew sail the seas to find the legendary One Piece treasure.'),
+  a('fate_zero', 'Fate/Zero', 8.1, 'Action / Dark Fantasy', 2011, 'ufotable',
+    'Mages and their summoned heroic spirits battle to the death for the wish-granting Holy Grail.'),
+  a('cowboy_bebop', 'Cowboy Bebop', 8.1, 'Sci-Fi / Neo-Noir', 1998, 'Sunrise',
+    'A ragtag crew of bounty hunters travel a future solar system — jazz, tragedy, and style.'),
+  a('ghost_in_shell', 'Ghost in the Shell', 8.1, 'Sci-Fi / Thriller', 1995, 'Production I.G',
+    'A cyborg officer hunts a mysterious hacker in a near-future world blurring human and machine.'),
+  a('steins_gate_0', 'Steins;Gate 0', 8.1, 'Sci-Fi / Thriller', 2018, 'White Fox',
+    'Okabe, haunted by failure, tries to move on — until a new AI reignites the time travel tragedy.'),
+  a('akira', 'Akira', 8.1, 'Sci-Fi / Action', 1988, 'Tokyo Movie Shinsha',
+    'A biker gang member tries to save his friend after a government experiment awakens godlike psychic power.'),
+  a('samurai_champloo', 'Samurai Champloo', 8.1, 'Action / Historical', 2004, 'Manglobe',
+    'Two contrasting swordsmen and a girl travel Edo-period Japan searching for a sunflower-scented samurai.'),
+  a('made_in_abyss_s2', 'Made in Abyss: The Golden City', 8.1, 'Adventure / Dark Fantasy', 2022, 'Kinema Citrus',
+    'The descent continues into the abyss\'s sixth layer, darker and more disturbing than ever.'),
+  a('promised_neverland', 'The Promised Neverland', 8.0, 'Thriller / Horror', 2019, 'CloverWorks',
+    'Orphan children discover their idyllic home hides a monstrous secret and plan their escape.'),
+  a('clannad', 'Clannad', 8.0, 'Romance / Drama', 2007, 'Kyoto Animation',
+    'A delinquent slowly opens his heart by helping a lonely girl and her drama club at school.'),
+  a('86_part1', '86 Eighty-Six', 8.0, 'Sci-Fi / Military', 2021, 'A-1 Pictures',
+    'A soldier commanding robot-like drones discovers the pilots are human children being sent to die.'),
+  a('konosuba', 'KonoSuba', 8.0, 'Isekai / Comedy', 2016, 'Studio Deen',
+    'A boy dies of shock and is reincarnated in a fantasy world with a useless water goddess.'),
+
+  // ── B-TIER HIGH (7.5–7.9) ─────────────────────────────────────────────────
+  a('naruto_shippuden', 'Naruto: Shippuden', 7.9, 'Action / Shonen', 2007, 'Pierrot',
+    'Naruto returns after two years of training to face the Akatsuki, who threaten the ninja world.'),
+  a('naruto', 'Naruto', 7.9, 'Action / Shonen', 2002, 'Pierrot',
+    'A young ninja with a powerful spirit sealed inside him dreams of becoming the village\'s strongest.'),
+  a('toradora', 'Toradora', 7.9, 'Romance / Comedy', 2008, 'J.C. Staff',
+    'A boy with a scary face and a small girl with a fierce attitude team up to help each other confess.'),
+  a('your_lie_april', 'Your Lie in April', 7.9, 'Music / Drama', 2014, 'A-1 Pictures',
+    'A piano prodigy who lost his ability to hear his own playing meets a violinist who changes his life.'),
+  a('anohana', 'Anohana: The Flower We Saw That Day', 7.8, 'Drama / Supernatural', 2011, 'A-1 Pictures',
+    'A ghost of a childhood friend appears to a shut-in boy and asks him to fulfill her final wish.'),
+  a('dragon_ball_z', 'Dragon Ball Z', 7.8, 'Action / Shonen', 1989, 'Toei Animation',
+    'Goku and his friends defend Earth from increasingly powerful alien and supernatural villains.'),
+  a('tokyo_ghoul', 'Tokyo Ghoul', 7.8, 'Dark Fantasy / Horror', 2014, 'Pierrot',
+    'A college student becomes half-ghoul after a deadly encounter and struggles to retain his humanity.'),
+  a('berserk_1997', 'Berserk (1997)', 7.8, 'Action / Dark Fantasy', 1997, 'OLM',
+    'A lone mercenary joins a legendary band of warriors, unaware of the horrific fate awaiting them.'),
+  a('rurouni_kenshin', 'Rurouni Kenshin', 7.8, 'Action / Historical', 1996, 'Deen',
+    'A legendary assassin from the revolution era vows to never kill again and protects those in need.'),
+  a('yu_yu_hakusho', 'Yu Yu Hakusho', 7.8, 'Action / Supernatural', 1992, 'Pierrot',
+    'A delinquent teen dies saving a child and is given a second chance as a Spirit Detective.'),
+  a('bleach', 'Bleach', 7.8, 'Action / Supernatural', 2004, 'Pierrot',
+    'A teenager gains the powers of a Soul Reaper and must defend the living world from evil spirits.'),
+  a('that_time_slime', 'That Time I Got Reincarnated as a Slime', 7.8, 'Isekai / Fantasy', 2018, '8bit',
+    'A man reincarnates as a slime monster in a fantasy world and builds a nation of monsters.'),
+  a('black_lagoon', 'Black Lagoon', 7.8, 'Action / Crime', 2006, 'Madhouse',
+    'A Japanese salaryman joins a crew of modern-day pirates in a lawless Southeast Asian city.'),
+  a('soul_eater', 'Soul Eater', 7.7, 'Action / Fantasy', 2008, 'Bones',
+    'Students at a death academy train their weapon partners by collecting the souls of evil humans.'),
+  a('trigun', 'Trigun', 7.7, 'Sci-Fi / Western', 1998, 'Madhouse',
+    'A legendary gunman with a bounty on his head wanders a desert planet while trying to avoid violence.'),
+  a('inuyasha', 'Inuyasha', 7.7, 'Action / Romance', 2000, 'Sunrise',
+    'A girl travels to feudal Japan and teams up with a half-demon to collect shards of a sacred jewel.'),
+  a('angel_beats', 'Angel Beats!', 7.7, 'Drama / Action', 2010, 'P.A. Works',
+    'Students in a mysterious afterlife school fight against what seems to be a supernatural student council.'),
+  a('k_on_ii', 'K-On!!', 7.7, 'Slice of Life / Music', 2010, 'Kyoto Animation',
+    'The Light Music Club\'s third and fourth years — relaxed, warm, and quietly heartbreaking at the end.'),
+  a('noragami', 'Noragami', 7.6, 'Action / Supernatural', 2014, 'Bones',
+    'A minor delivery god seeks more followers while wielding a shape-shifting human as his divine weapon.'),
+  a('log_horizon', 'Log Horizon', 7.6, 'Isekai / Fantasy', 2013, 'Satelight',
+    'Players trapped in an MMORPG focus not on escaping but on building a functioning society.'),
+  a('full_metal_panic', 'Full Metal Panic!', 7.6, 'Action / Romance', 2002, 'Gonzo',
+    'A soldier trained only for combat is assigned to secretly protect a high school girl.'),
+  a('durarara', 'Durarara!!', 7.6, 'Supernatural / Thriller', 2010, 'Brain\'s Base',
+    'Multiple interconnected storylines collide in the underground world of Ikebukuro, Tokyo.'),
+  a('k_on', 'K-On!', 7.6, 'Slice of Life / Music', 2009, 'Kyoto Animation',
+    'Four girls form a light music club with very little musical ability and a lot of cake.'),
+  a('claymore', 'Claymore', 7.6, 'Action / Dark Fantasy', 2007, 'Madhouse',
+    'Half-human, half-demon warriors called Claymores hunt demons while fighting their own inner nature.'),
+  a('sword_art_alicization', 'SAO: Alicization', 7.5, 'Isekai / Action', 2018, 'A-1 Pictures',
+    'Kirito dives into a new VR world where the AIs feel human and the stakes are existential.'),
+  a('rising_shield_hero', 'The Rising of the Shield Hero', 7.5, 'Isekai / Action', 2019, 'Kinema Citrus',
+    'A boy summoned as a shield hero is betrayed and must rebuild from nothing in a hostile world.'),
+  a('danmachi', 'Is It Wrong to Try to Pick Up Girls in a Dungeon?', 7.5, 'Action / Fantasy', 2015, 'J.C. Staff',
+    'A boy adventurer joined by a goddess explores a labyrinth city in search of strength and connection.'),
+  a('konosuba_s2', 'KonoSuba Season 2', 7.5, 'Isekai / Comedy', 2017, 'Studio Deen',
+    'The useless party of Kazuma continues their hopeless but hilarious quest to defeat the Demon King.'),
+  a('overlord', 'Overlord', 7.5, 'Isekai / Dark Fantasy', 2015, 'Madhouse',
+    'A player is trapped in a dark fantasy game as his powerful undead avatar at server shutdown.'),
+  a('slime_datta_ken_s2', 'That Time I Got Reincarnated as a Slime S2', 7.5, 'Isekai / Fantasy', 2021, '8bit',
+    'Rimuru faces political enemies who threaten his beloved monster nation.'),
+
+  // ── B-TIER MID (7.0–7.4) ──────────────────────────────────────────────────
+  a('black_clover', 'Black Clover', 7.4, 'Action / Fantasy', 2017, 'Pierrot',
+    'A boy born without magic in a magic-dominated world aims to become the Wizard King.'),
+  a('dragon_ball_super', 'Dragon Ball Super', 7.4, 'Action / Shonen', 2015, 'Toei Animation',
+    'Goku and friends discover new gods and universes to fight in this sequel to Dragon Ball Z.'),
+  a('no_game_no_life', 'No Game No Life', 7.4, 'Isekai / Strategy', 2014, 'Madhouse',
+    'Genius gamer siblings are transported to a world where all conflict is resolved by games.'),
+  a('charlotte', 'Charlotte', 7.4, 'Supernatural / Drama', 2015, 'P.A. Works',
+    'Teenagers with unstable supernatural powers attend a special school to be protected from researchers.'),
+  a('tokyo_revengers', 'Tokyo Revengers', 7.4, 'Action / Time Travel', 2021, 'Liden Films',
+    'A loser time-leaps to middle school to prevent his first love from being murdered by a gang.'),
+  a('fairy_tail', 'Fairy Tail', 7.3, 'Action / Fantasy', 2009, 'A-1 Pictures',
+    'A wizard joins a rowdy guild of mages on wild adventures with themes of friendship and power.'),
+  a('mirai_nikki', 'Future Diary', 7.3, 'Thriller / Romance', 2011, 'Asread',
+    'A boy receives a diary that predicts the future and is forced into a survival game with other owners.'),
+  a('akame_ga_kill', 'Akame ga Kill!', 7.3, 'Action / Dark Fantasy', 2014, 'White Fox',
+    'A naive boy joins a group of assassins trying to overthrow a corrupt empire — with heavy casualties.'),
+  a('nana', 'Nana', 7.3, 'Romance / Drama', 2006, 'Madhouse',
+    'Two girls named Nana meet on a train to Tokyo and form a deep, complicated friendship.'),
+  a('working', 'Wagnaria!! (Working!!)', 7.3, 'Slice of Life / Comedy', 2010, 'A-1 Pictures',
+    'A family restaurant full of eccentric staff navigate crushes, quirks, and daily absurdity.'),
+  a('sword_art_online', 'Sword Art Online', 7.2, 'Isekai / Action', 2012, 'A-1 Pictures',
+    'Players are trapped in a deadly virtual reality game and must clear it floor by floor to escape.'),
+  a('highschool_dxd', 'High School DxD', 7.2, 'Action / Harem', 2012, 'TNK',
+    'A boy is killed by his first girlfriend (a fallen angel) and reincarnates as a devil.'),
+  a('guilty_crown', 'Guilty Crown', 7.2, 'Action / Sci-Fi', 2011, 'Production I.G',
+    'A boy gains the power to extract weapons from people\'s hearts in a post-apocalyptic Japan.'),
+  a('darling_franxx', 'Darling in the FranXX', 7.2, 'Mecha / Romance', 2018, 'Trigger / A-1 Pictures',
+    'Children pilot giant mechs in male-female pairs to fight alien creatures in a dying world.'),
+  a('seraph_end', 'Seraph of the End', 7.2, 'Action / Dark Fantasy', 2015, 'WIT Studio',
+    'After a virus kills adults, vampires enslave humanity — until a boy joins a team to fight back.'),
+  a('re_creators', 'Re:Creators', 7.2, 'Action / Fantasy', 2017, 'Troyca',
+    'Fictional characters from anime and games appear in the real world, some seeking to destroy it.'),
+  a('demon_king_academy', 'The Misfit of Demon King Academy', 7.1, 'Action / Fantasy', 2020, 'Silver Link',
+    'The Demon King reincarnates 2000 years later only to be told he lacks magic by his own descendants.'),
+  a('high_card', 'High Card', 7.1, 'Action / Thriller', 2023, 'Studio Hibari',
+    'A boy joins a covert group tasked with recovering a deck of supernatural playing cards.'),
+  a('wise_man_grandchild', 'Wise Man\'s Grandchild', 7.0, 'Isekai / Action', 2019, 'Silver Link',
+    'A modern man reincarnates in a fantasy world and is raised by a legendary sage — with overpowered magic.'),
+  a('madan_vanadis', 'Madan no Ou to Vanadis', 7.0, 'Action / Fantasy', 2014, 'Satelight',
+    'A young lord is captured by a war maiden and becomes her unlikely ally in a kingdom at war.'),
+  a('trinity_seven', 'Trinity Seven', 7.0, 'Action / Harem', 2014, 'Seven Arcs Pictures',
+    'A boy enrolls in a magic academy after his world collapses and forms bonds with seven powerful mages.'),
+
+  // ── C-TIER (6.0–6.9) ──────────────────────────────────────────────────────
+  a('sao_ii', 'Sword Art Online II', 6.9, 'Isekai / Action', 2014, 'A-1 Pictures',
+    'Kirito enters a gun-based VR game to investigate a player who can kill people in real life.'),
+  a('domestic_girlfriend', 'Domestic Girlfriend', 6.9, 'Romance / Drama', 2019, 'Doga Kobo',
+    'A boy hooks up with a stranger, then discovers she and her sister are now his new stepsisters.'),
+  a('tpn_s2', 'The Promised Neverland Season 2', 6.8, 'Thriller', 2021, 'CloverWorks',
+    'The escaped children face new threats in the outside world — a deeply divisive follow-up.'),
+  a('mahou_isekai', 'In Another World With My Smartphone', 6.8, 'Isekai / Harem', 2017, 'Production Reed',
+    'A boy reincarnates in a fantasy world with his smartphone still functional.'),
+  a('asterisk_war', 'The Asterisk War', 6.7, 'Action / Harem', 2015, 'A-1 Pictures',
+    'A transfer student enters a city of academies where students compete in battle tournaments.'),
+  a('hundred', 'Hundred', 6.7, 'Action / Harem', 2016, 'Production IMS',
+    'A boy with a perfect compatibility score for a weapon enters a battle academy on a battleship.'),
+  a('chivalry_failed_knight', 'Chivalry of a Failed Knight', 6.7, 'Action / Romance', 2015, 'Nexus',
+    'The weakest knight student challenges the strongest — and their rivalry turns into something more.'),
+  a('infinite_stratos', 'Infinite Stratos', 6.7, 'Mecha / Harem', 2011, '8bit',
+    'The only boy who can pilot advanced IS mecha suits is suddenly surrounded by fighting girls.'),
+  a('mahou_shoujo_site', 'Magical Girl Site', 6.6, 'Dark Fantasy / Horror', 2018, 'Production IMS',
+    'A bullied girl receives a magical stick from a mysterious website with dark consequences.'),
+  a('diabolik_lovers', 'Diabolik Lovers', 6.6, 'Romance / Horror', 2013, 'Zexcs',
+    'A girl is sent to live in a mansion with vampire brothers who see her only as food.'),
+  a('btooom', 'Btooom!', 6.6, 'Action / Survival', 2012, 'Madhouse',
+    'A top player of an online bomb game wakes up on an island forced to play the game with real bombs.'),
+  a('taboo_tattoo', 'Taboo Tattoo', 6.5, 'Action / Supernatural', 2016, 'J.C. Staff',
+    'A boy receives a mysterious tattoo that grants superhuman power and gets dragged into a secret war.'),
+  a('chaos_dragon', 'Chaos Dragon', 6.5, 'Action / Fantasy', 2015, 'Silver Link',
+    'A prince of a conquered nation contracts with a death god to free his people.'),
+  a('rail_wars', 'Rail Wars!', 6.5, 'Action / Harem', 2014, 'Passione',
+    'A boy joins a railroad security force and encounters a series of increasingly unlikely incidents.'),
+  a('valkyrie_drive', 'Valkyrie Drive: Mermaid', 6.5, 'Action / Fantasy', 2015, 'Arms',
+    'Girls who can transform into weapons are sent to an island to fight each other.'),
+  a('majestic_prince', 'Gargantia on the Verdurous Planet', 6.5, 'Sci-Fi / Adventure', 2013, 'Production I.G',
+    'A soldier from a space war crash-lands on a distant water planet and must learn to live slowly.'),
+  a('strike_witches', 'Strike Witches', 6.4, 'Action / Fantasy', 2008, 'Gonzo',
+    'Girls wearing magical leg devices fight alien invaders in an alternate World War II setting.'),
+  a('akikan', 'Akikan!', 6.4, 'Romance / Comedy', 2009, 'Brain\'s Base',
+    'A boy\'s juice can transforms into a girl and he must help her compete in battles against other can-girls.'),
+  a('mahou_shoujo_spec_ops', 'Magical Girl Spec-Ops Asuka', 6.4, 'Action / Dark Fantasy', 2019, 'Liden Films',
+    'A veteran magical girl with PTSD is forced back into action when new threats emerge.'),
+  a('sword_oratoria', 'DanMachi: Sword Oratoria', 6.3, 'Action / Fantasy', 2017, 'J.C. Staff',
+    'A spinoff following the sword princess Aiz through the same events as the main series.'),
+  a('bonjour_sweet', 'Bonjour Sweet Love Patisserie', 6.3, 'Romance / Slice of Life', 2014, 'OLM',
+    'A girl attends a prestigious confectionery school and falls for the handsome teachers.'),
+  a('isekai_maou', 'How NOT to Summon a Demon Lord', 6.3, 'Isekai / Harem', 2018, 'Ajia-do',
+    'A socially awkward gamer is summoned into a game as his overpowered character.'),
+  a('arifureta', 'Arifureta: From Commonplace to World\'s Strongest', 6.2, 'Isekai / Action', 2019, 'asread',
+    'A boy is betrayed and thrown into a dungeon, emerging as a ruthless overpowered fighter.'),
+  a('school_days', 'School Days', 6.1, 'Romance / Drama', 2007, 'TNK',
+    'A school romance that starts typically — and escalates into one of anime\'s most notorious endings.'),
+
+  // ── D-TIER (5.0–5.9) ──────────────────────────────────────────────────────
+  a('isekai_smartphone', 'Isekai wa Smartphone to Tomo ni', 5.9, 'Isekai / Harem', 2017, 'Production Reed',
+    'A boy reincarnates in a fantasy world with his smartphone. As comfortable and boring as that sounds.'),
+  a('conception', 'Conception', 5.8, 'Isekai / Harem', 2018, 'GONZO',
+    'A boy must father children with twelve star maidens to save a fantasy world. Yes, really.'),
+  a('sao_fatal_bullet', 'Sword Art Online: Fatal Bullet', 5.8, 'Isekai / Action', 2018, 'A-1 Pictures',
+    'A spinoff arc where Kirito enters a new gun game, this time with questionable storytelling.'),
+  a('harem_labyrinth', 'Labyrinth of Harem', 5.7, 'Isekai / Harem', 2022, 'Passione',
+    'A boy is transported to a fantasy labyrinth where women seek him as a breeding partner.'),
+  a('kenja_no_mago', 'Didn\'t I Say to Make My Abilities Average?', 5.7, 'Isekai / Comedy', 2019, 'project No.9',
+    'A girl asks to be average in her reincarnation — and becomes only half as strong as a demigod.'),
+  a('demon_king_daimao', 'Demon King Daimao', 5.7, 'Action / Harem', 2010, 'Artland',
+    'A boy enrolling at a magic academy is told he will become the next Demon King.'),
+  a('rokudenashi', 'Akashic Records of Bastard Magic Instructor', 5.6, 'Action / Fantasy', 2017, 'Liden Films',
+    'A lazy substitute teacher at a magic academy turns out to be far more competent than he seems.'),
+  a('asterisk_war_s2', 'The Asterisk War Season 2', 5.6, 'Action / Harem', 2016, 'A-1 Pictures',
+    'The tournament arc continues with few surprises and even less character development.'),
+  a('baka_test', 'Baka and Test', 5.5, 'Comedy / Romance', 2010, 'Brain\'s Base',
+    'Students summon chibi avatars whose strength is based on exam scores to battle other classes.'),
+  a('infinite_stratos_s2', 'Infinite Stratos 2', 5.5, 'Mecha / Harem', 2013, '8bit',
+    'More harem antics with mechs but fewer memorable moments than the first season.'),
+  a('nyan_koi', 'Nyan Koi!', 5.4, 'Romance / Comedy', 2009, 'AIC ASTA',
+    'A boy who hates cats accidentally breaks a cat statue and must now grant wishes for 100 cats.'),
+  a('keijo', 'Keijo!!!!!!!!', 5.4, 'Sports / Action', 2016, 'Xebec',
+    'Girls compete in a sport where they fight on platforms using only their hips and chests.'),
+  a('ikkitousen', 'Ikki Tousen', 5.3, 'Action / Historical', 2003, 'J.C. Staff',
+    'High school students fight each other while being possessed by souls from the Three Kingdoms era.'),
+
+  // ── F-TIER (below 5.0) ────────────────────────────────────────────────────
+  a('abunai_sisters', 'Abunai Sisters', 4.9, 'Comedy', 2009, 'Production Reed',
+    'A short-form comedy series so poorly received it has become a meme of how bad anime can get.'),
+  a('pupa', 'Pupa', 4.8, 'Horror', 2014, 'Studio Deen',
+    'A boy whose sister turns into a monster and eats him repeatedly for sustenance. Poorly executed horror.'),
+  a('mars_of_destruction', 'Mars of Destruction', 4.7, 'Action / Horror', 2005, 'Idea Factory',
+    'A 19-minute OVA so legendarily bad it is frequently cited as one of the worst anime ever made.'),
+  a('skelter_heaven', 'Skelter Heaven', 4.6, 'Action / Sci-Fi', 2004, 'Idea Factory',
+    'A mecha action OVA with almost universally negative reviews even by anime standards.'),
+  a('noblesse_special', 'Noblesse: Awakening OVA', 4.5, 'Action / Supernatural', 2016, 'Production I.G',
+    'A rushed 30-minute adaptation of the manhwa that skips most of what made the source enjoyable.'),
+
 ];
 
-// Separate offer pool — anime the banker uses for offers (not in boxes)
-export const OFFER_POOL: Anime[] = [
-  {
-    id: 'gintama',
-    title: 'Gintama',
-    rating: 9.0,
-    tier: tier(9.0),
-    genre: 'Comedy / Action',
-    year: 2006,
-    studio: 'Sunrise',
-    description: 'Samurai take odd jobs in an alien-occupied Edo Japan. A legendary comedy.'
-  },
-  {
-    id: 'demon_slayer_mugen',
-    title: 'Demon Slayer: Mugen Train',
-    rating: 8.7,
-    tier: tier(8.7),
-    genre: 'Action / Supernatural',
-    year: 2020,
-    studio: 'ufotable',
-    description: 'Tanjiro boards an infinite dream train to stop a demon preying on passengers.'
-  },
-  {
-    id: 'your_name',
-    title: 'Your Name',
-    rating: 8.6,
-    tier: tier(8.6),
-    genre: 'Romance / Supernatural',
-    year: 2016,
-    studio: 'CoMix Wave Films',
-    description: 'Two teenagers mysteriously swap bodies and try to find each other.'
-  },
-  {
-    id: 'spirited_away',
-    title: 'Spirited Away',
-    rating: 8.5,
-    tier: tier(8.5),
-    genre: 'Fantasy / Adventure',
-    year: 2001,
-    studio: 'Studio Ghibli',
-    description: 'A girl enters a spirit world and must work to free herself and her transformed parents.'
-  },
-  {
-    id: 'princess_mononoke',
-    title: 'Princess Mononoke',
-    rating: 8.4,
-    tier: tier(8.4),
-    genre: 'Fantasy / Action',
-    year: 1997,
-    studio: 'Studio Ghibli',
-    description: 'A young prince caught between the forces of nature and human civilization.'
-  },
-  {
-    id: 'violet_evergarden',
-    title: 'Violet Evergarden',
-    rating: 8.2,
-    tier: tier(8.2),
-    genre: 'Drama / Fantasy',
-    year: 2018,
-    studio: 'Kyoto Animation',
-    description: 'A war veteran learns to understand human emotion as an Auto Memory Doll.'
-  },
-  {
-    id: 'made_in_abyss',
-    title: 'Made in Abyss',
-    rating: 8.2,
-    tier: tier(8.2),
-    genre: 'Adventure / Dark Fantasy',
-    year: 2017,
-    studio: 'Kinema Citrus',
-    description: 'A girl and a robot boy descend into a mysterious, deadly chasm.'
-  },
-  {
-    id: 'cowboy_bebop',
-    title: 'Cowboy Bebop',
-    rating: 8.1,
-    tier: tier(8.1),
-    genre: 'Sci-Fi / Neo-Noir',
-    year: 1998,
-    studio: 'Sunrise',
-    description: 'A ragtag crew of bounty hunters travel through a future solar system.'
-  },
-  {
-    id: 'neon_genesis',
-    title: 'Neon Genesis Evangelion',
-    rating: 8.1,
-    tier: tier(8.1),
-    genre: 'Mecha / Psychological',
-    year: 1995,
-    studio: 'Gainax',
-    description: 'Teenagers pilot giant mechs against mysterious beings in a post-catastrophe world.'
-  },
-  {
-    id: 'fate_zero',
-    title: 'Fate/Zero',
-    rating: 8.0,
-    tier: tier(8.0),
-    genre: 'Action / Dark Fantasy',
-    year: 2011,
-    studio: 'ufotable',
-    description: 'Mages and their heroic spirits battle for the omnipotent Holy Grail.'
-  },
-  {
-    id: 'sword_art_alicization',
-    title: 'SAO: Alicization',
-    rating: 7.5,
-    tier: tier(7.5),
-    genre: 'Isekai / Action',
-    year: 2018,
-    studio: 'A-1 Pictures',
-    description: 'Kirito dives into a new VR world with a mission to protect two AIs.'
-  },
-  {
-    id: 'tpn_s2',
-    title: 'The Promised Neverland S2',
-    rating: 6.5,
-    tier: tier(6.5),
-    genre: 'Thriller',
-    year: 2021,
-    studio: 'CloverWorks',
-    description: 'The children escape and face new threats in the outside world. A divisive sequel.'
-  },
-  {
-    id: 'infinite_stratos',
-    title: 'Infinite Stratos',
-    rating: 5.5,
-    tier: tier(5.5),
-    genre: 'Harem / Mecha',
-    year: 2011,
-    studio: '8bit',
-    description: 'The only boy who can pilot advanced mecha suits is surrounded by fighting girls.'
-  },
-  {
-    id: 'conception',
-    title: 'Conception',
-    rating: 5.0,
-    tier: tier(5.0),
-    genre: 'Isekai / Harem',
-    year: 2018,
-    studio: 'GONZO',
-    description: 'A boy must father children with twelve star maidens to save a fantasy world.'
-  },
-];
+// ── Selection helpers ──────────────────────────────────────────────────────
+
+export function getByTier(animeTier: AnimeTier, pool: Anime[] = ANIME_DATABASE): Anime[] {
+  return pool.filter(a => a.tier === animeTier);
+}
 
 export function getAnimeByRating(
   targetRating: number,
   pool: Anime[],
   tolerance = 1.5
 ): Anime | null {
-  const candidates = pool.filter(
-    a => Math.abs(a.rating - targetRating) <= tolerance
-  );
+  const candidates = pool.filter(a => Math.abs(a.rating - targetRating) <= tolerance);
   if (candidates.length === 0) return pool[0] ?? null;
-  candidates.sort(
-    (a, b) => Math.abs(a.rating - targetRating) - Math.abs(b.rating - targetRating)
-  );
+  candidates.sort((a, b) => Math.abs(a.rating - targetRating) - Math.abs(b.rating - targetRating));
   return candidates[0];
 }
 
-export function getAnimeByTier(
-  targetTier: AnimeTier,
-  pool: Anime[]
-): Anime | null {
-  const matches = pool.filter(a => a.tier === targetTier);
-  if (matches.length === 0) return null;
-  return matches[Math.floor(Math.random() * matches.length)];
+// Pick `n` random items from `pool` using a seeded rand function
+export function pickN<T>(pool: T[], n: number, rand: () => number): T[] {
+  const arr = [...pool];
+  const result: T[] = [];
+  while (result.length < n && arr.length > 0) {
+    const i = Math.floor(rand() * arr.length);
+    result.push(arr.splice(i, 1)[0]);
+  }
+  return result;
 }

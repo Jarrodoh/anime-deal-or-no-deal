@@ -1,5 +1,10 @@
 import { Anime, BankerOffer, BankerTrigger, GameState, ROUND_CONFIGS } from '@/types';
-import { OFFER_POOL, getAnimeByRating } from './anime-data';
+import { getAnimeByRating } from './anime-data';
+import { getDailyOfferPool } from './daily-seed';
+
+function getOfferPool(state: GameState): Anime[] {
+  return getDailyOfferPool(state.dailySeed);
+}
 
 const OFFER_FACTORS: Record<number, number> = {
   25: 0.08,
@@ -49,7 +54,7 @@ function buildOffer(
   trigger: BankerTrigger,
   message: string,
   ev: number,
-  pool: Anime[] = OFFER_POOL
+  pool: Anime[]
 ): BankerOffer {
   const anime = getAnimeByRating(targetRating, pool, 2.0) ?? pool[0];
   return {
@@ -65,9 +70,9 @@ function buildOffer(
 // --- Gimmick: 50/50 ---
 // When exactly 2 board boxes remain and the spread is >= 3 stars,
 // offer a famous but mid-tier anime to tempt the player away from gambling.
-function fiftyFiftyOffer(remaining: Anime[], ev: number): BankerOffer {
-  const target = OFFER_POOL.find(a => a.rating >= 7.0 && a.rating <= 7.8);
-  const anime = target ?? OFFER_POOL[0];
+function fiftyFiftyOffer(remaining: Anime[], ev: number, pool: Anime[]): BankerOffer {
+  const target = pool.find(a => a.rating >= 7.0 && a.rating <= 7.8);
+  const anime = target ?? pool[0];
   const messages = [
     `Two boxes remain. One legendary... one forgettable. I'm offering you certainty: ${anime.title}. Think carefully.`,
     `It's a coin flip. Walk away with ${anime.title} right now or leave it to fate.`,
@@ -84,25 +89,18 @@ function fiftyFiftyOffer(remaining: Anime[], ev: number): BankerOffer {
 }
 
 // --- Gimmick: Near Miss ---
-// Player just opened a 9+ rated anime (missed the jackpot). Banker offers comfort.
-function nearMissOffer(ev: number): BankerOffer {
+function nearMissOffer(ev: number, pool: Anime[]): BankerOffer {
   const targetRating = Math.min(ev * 0.80, 8.4);
   const messages = [
     "Ouch. That one stung. Here — let me make the pain go away.",
     "I saw your face. Rough one. This offer is my way of being... merciful.",
     "You found the legendary one early. But there's still something good left for you.",
   ];
-  return buildOffer(
-    targetRating,
-    'near_miss',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'near_miss', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
 // --- Gimmick: Hot Streak ---
-// Player opened 3+ low-rated anime in a row. Banker offers slightly better than formula.
-function hotStreakOffer(ev: number, remainingCount: number): BankerOffer {
+function hotStreakOffer(ev: number, remainingCount: number, pool: Anime[]): BankerOffer {
   const factor = getOfferFactor(remainingCount) * 1.15;
   const targetRating = Math.min(ev * factor, 9.1);
   const messages = [
@@ -110,17 +108,11 @@ function hotStreakOffer(ev: number, remainingCount: number): BankerOffer {
     "That's three bad boxes in a row. Maybe it's time to take what I'm offering.",
     "You're on a cold streak for the boxes. But this offer? This is warm.",
   ];
-  return buildOffer(
-    targetRating,
-    'hot_streak',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'hot_streak', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
 // --- Gimmick: Cold Streak ---
-// Player eliminated 3+ high-rated anime. Banker is stingy.
-function coldStreakOffer(ev: number, remainingCount: number): BankerOffer {
+function coldStreakOffer(ev: number, remainingCount: number, pool: Anime[]): BankerOffer {
   const factor = getOfferFactor(remainingCount) * 0.88;
   const targetRating = ev * factor;
   const messages = [
@@ -128,35 +120,22 @@ function coldStreakOffer(ev: number, remainingCount: number): BankerOffer {
     "Three great anime gone. The remaining pool is... well. You know.",
     "You've made my job easy. This offer reflects that.",
   ];
-  return buildOffer(
-    targetRating,
-    'cold_streak',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'cold_streak', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
 // --- Gimmick: Cluster ---
-// All remaining anime are within 1.5 rating points of each other. Offer near the midpoint.
-function clusterOffer(remaining: Anime[], ev: number): BankerOffer {
+function clusterOffer(remaining: Anime[], ev: number, pool: Anime[]): BankerOffer {
   const targetRating = ev * 0.93;
-  const spread = Math.max(...remaining.map(a => a.rating)) - Math.min(...remaining.map(a => a.rating));
   const messages = [
     `The remaining ${remaining.length} anime are all suspiciously close in quality. I'm offering you the middle ground.`,
     "Very consistent board. Not many surprises left. Here's a reliable pick.",
     `Everything left is in the ${Math.min(...remaining.map(a => a.rating)).toFixed(1)}–${Math.max(...remaining.map(a => a.rating)).toFixed(1)} range. Take certainty.`,
   ];
-  return buildOffer(
-    targetRating,
-    'cluster',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'cluster', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
 // --- Gimmick: Last Stand ---
-// 3 boxes remain, one is clearly the best (9+), others are mid.
-function lastStandOffer(remaining: Anime[], ev: number): BankerOffer {
+function lastStandOffer(remaining: Anime[], ev: number, pool: Anime[]): BankerOffer {
   const top = remaining.find(a => a.rating >= 9.0);
   const targetRating = (top?.rating ?? ev) * 0.88;
   const messages = [
@@ -164,18 +143,11 @@ function lastStandOffer(remaining: Anime[], ev: number): BankerOffer {
     "I can see you've got legendary taste. Let's see if your luck matches it.",
     "The crown jewel is still on the board. 1 in 3 chance. I'm offering you the safe path.",
   ];
-  return buildOffer(
-    targetRating,
-    'last_stand',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'last_stand', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
 // --- Gimmick: Jackpot Safe ---
-// Player's own box is the jackpot (we simulate knowing this via game logic hint).
-// Banker is extra stingy to prevent an easy win.
-function jackpotSafeOffer(ev: number, remainingCount: number): BankerOffer {
+function jackpotSafeOffer(ev: number, remainingCount: number, pool: Anime[]): BankerOffer {
   const factor = getOfferFactor(remainingCount) * 0.75;
   const targetRating = ev * factor;
   const messages = [
@@ -183,50 +155,32 @@ function jackpotSafeOffer(ev: number, remainingCount: number): BankerOffer {
     "My offer stands. And it's... conservative. You'll understand why eventually.",
     "I have a feeling about your box. So I'm being appropriately cautious.",
   ];
-  return buildOffer(
-    targetRating,
-    'jackpot_safe',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'jackpot_safe', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
-// --- Gimmick: Pity offer ---
-// Player's box contains a low-rated anime and most remaining boxes are also low.
-// Banker offers something better than mathematically warranted out of pity.
-function pityOffer(ev: number): BankerOffer {
+// --- Gimmick: Pity ---
+function pityOffer(ev: number, pool: Anime[]): BankerOffer {
   const targetRating = Math.max(ev * 1.25, 7.0);
   const messages = [
     "I'll be honest — neither of us is having a great day. Take this.",
     "The board isn't looking kind. Here's something decent to end your suffering.",
     "Out of respect for your effort: here's something better than the math suggests.",
   ];
-  return buildOffer(
-    targetRating,
-    'pity',
-    messages[Math.floor(Math.random() * messages.length)],
-    ev
-  );
+  return buildOffer(targetRating, 'pity', messages[Math.floor(Math.random() * messages.length)], ev, pool);
 }
 
-// --- Standard offer messages ---
 const STANDARD_MESSAGES = [
-  (anime: string, pct: string) =>
-    `My offer: ${anime}. That's ${pct}% of expected value. Respectable, no?`,
-  (anime: string, pct: string) =>
-    `${anime}. ${pct}% of what the board is worth. Deal?`,
-  (anime: string, pct: string) =>
-    `I'm putting ${anime} on the table. ${pct}% of EV. What do you say?`,
-  (anime: string, _pct: string) =>
-    `You could walk away with ${anime} right now. Or keep gambling.`,
-  (anime: string, pct: string) =>
-    `${pct}% of expected value. ${anime}. No tricks. Just an offer.`,
+  (anime: string, pct: string) => `My offer: ${anime}. That's ${pct}% of expected value. Respectable, no?`,
+  (anime: string, pct: string) => `${anime}. ${pct}% of what the board is worth. Deal?`,
+  (anime: string, pct: string) => `I'm putting ${anime} on the table. ${pct}% of EV. What do you say?`,
+  (anime: string, _pct: string) => `You could walk away with ${anime} right now. Or keep gambling.`,
+  (anime: string, pct: string) => `${pct}% of expected value. ${anime}. No tricks. Just an offer.`,
 ];
 
-function standardOffer(ev: number, remainingCount: number): BankerOffer {
+function standardOffer(ev: number, remainingCount: number, pool: Anime[]): BankerOffer {
   const factor = getOfferFactor(remainingCount);
   const targetRating = ev * factor;
-  const anime = getAnimeByRating(targetRating, OFFER_POOL, 2.5) ?? OFFER_POOL[0];
+  const anime = getAnimeByRating(targetRating, pool, 2.5) ?? pool[0];
   const pct = ((anime.rating / ev) * 100).toFixed(1);
   const msgFn = STANDARD_MESSAGES[Math.floor(Math.random() * STANDARD_MESSAGES.length)];
   return {
@@ -241,56 +195,49 @@ function standardOffer(ev: number, remainingCount: number): BankerOffer {
 
 // Master function — determines which gimmick applies and builds the offer
 export function calculateBankerOffer(state: GameState): BankerOffer {
+  const pool = getOfferPool(state);
   const remaining = getRemainingAnime(state);
   const remainingCount = remaining.length;
   const ev = expectedValue(remaining);
   const maxRemaining = Math.max(...remaining.map(a => a.rating));
   const minRemaining = Math.min(...remaining.map(a => a.rating));
 
-  // Gimmick: 50/50 (exactly 2 board boxes, large spread)
   if (remainingCount === 2 && maxRemaining - minRemaining >= 3.0) {
-    return fiftyFiftyOffer(remaining, ev);
+    return fiftyFiftyOffer(remaining, ev, pool);
   }
 
-  // Gimmick: Near miss (last opened was 9.0+)
   const lastOpened = state.openedHistory[state.openedHistory.length - 1];
   if (lastOpened && lastOpened.anime.rating >= 9.0 && remainingCount > 4) {
-    return nearMissOffer(ev);
+    return nearMissOffer(ev, pool);
   }
 
-  // Gimmick: Cluster (all remaining within 1.5 points, 5-8 boxes left)
   if (remainingCount >= 5 && remainingCount <= 8) {
     const spread = maxRemaining - minRemaining;
-    if (spread <= 1.5) return clusterOffer(remaining, ev);
+    if (spread <= 1.5) return clusterOffer(remaining, ev, pool);
   }
 
-  // Gimmick: Last Stand (3 boxes left, one is 9+)
   if (remainingCount === 3 && remaining.some(a => a.rating >= 9.0)) {
-    return lastStandOffer(remaining, ev);
+    return lastStandOffer(remaining, ev, pool);
   }
 
-  // Gimmick: Hot streak (last 3 opened were all D-tier or worse)
   const last3 = lastNOpened(state, 3);
   if (last3.length === 3 && last3.every(a => a.rating <= 6.0)) {
-    return hotStreakOffer(ev, remainingCount);
+    return hotStreakOffer(ev, remainingCount, pool);
   }
 
-  // Gimmick: Cold streak (last 3 opened were all A-tier or better)
   if (last3.length === 3 && last3.every(a => a.rating >= 8.5)) {
-    return coldStreakOffer(ev, remainingCount);
+    return coldStreakOffer(ev, remainingCount, pool);
   }
 
-  // Gimmick: Jackpot safe (player's box is S-tier)
   if (state.jackpotSafe && remainingCount > 3) {
-    return jackpotSafeOffer(ev, remainingCount);
+    return jackpotSafeOffer(ev, remainingCount, pool);
   }
 
-  // Gimmick: Pity (EV is below 6.5 and player is stuck)
   if (ev <= 6.5 && remainingCount >= 3) {
-    return pityOffer(ev);
+    return pityOffer(ev, pool);
   }
 
-  return standardOffer(ev, remainingCount);
+  return standardOffer(ev, remainingCount, pool);
 }
 
 // Banker message when player says NO DEAL
