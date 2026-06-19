@@ -137,12 +137,11 @@ export default function GamePage() {
         </div>
       </header>
 
-      <div className="flex-1 max-w-7xl mx-auto w-full px-4 py-6 space-y-6">
+      <div className="flex-1 max-w-6xl mx-auto w-full px-4 py-6">
+        <div className="flex gap-5 items-start">
 
-        {/* Grid row: BoxGrid centered + PlayerBox beside it */}
-        <div className="flex gap-6 justify-center items-start">
-          {/* Main game column — capped width so the 3x3 grid stays reasonable */}
-          <div className="w-full max-w-lg space-y-5">
+          {/* Main: grid + controls */}
+          <div className="flex-1 space-y-4">
             <AnimatePresence mode="wait">
               {state.phase === 'pick_box' && (
                 <motion.div key="pick" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center py-2">
@@ -160,6 +159,7 @@ export default function GamePage() {
               )}
             </AnimatePresence>
 
+            {/* BoxGrid — Skip/Next render as centred buttons below the grid */}
             <BoxGrid
               boxes={state.boxes}
               playerBoxId={state.playerBoxId}
@@ -167,13 +167,14 @@ export default function GamePage() {
               onSelectBox={state.phase === 'pick_box' ? pickBox : handleBoxOpen}
             />
 
-            {/* Mobile: player box below grid */}
+            {/* Mobile: player box */}
             {playerBox && (
               <div className="flex justify-center lg:hidden">
                 <PlayerBoxDisplay box={playerBox} phase={state.phase} />
               </div>
             )}
 
+            {/* Final swap */}
             {state.phase === 'final_swap' && state.currentOffer && !showingBankerCall && (
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
                 className="rounded-2xl border border-yellow-400/20 bg-yellow-400/5 p-5 text-center">
@@ -188,20 +189,33 @@ export default function GamePage() {
             )}
           </div>
 
-          {/* Desktop: player box to the right of the grid */}
-          {playerBox && (
-            <div className="hidden lg:flex flex-col items-center gap-3 pt-10">
-              <PlayerBoxDisplay box={playerBox} phase={state.phase} />
+          {/* Sidebar: Eliminated (top) → Board (bottom) */}
+          <aside className="hidden lg:flex flex-col gap-4 w-72 xl:w-80">
+            {/* Player box */}
+            {playerBox && (
+              <div className="flex justify-center">
+                <PlayerBoxDisplay box={playerBox} phase={state.phase} />
+              </div>
+            )}
+
+            {/* Eliminated panel */}
+            <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
+
+            {/* Today's board */}
+            <div className="rounded-xl border border-white/12 bg-white/5 p-4">
+              <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
             </div>
-          )}
+          </aside>
+
+          {/* Mobile: eliminated + board stacked below the grid (outside the flex row, rendered via order) */}
         </div>
 
-        {/* Eliminated zone — full width */}
-        <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
-
-        {/* Board — full width */}
-        <div className="rounded-xl border border-white/12 bg-white/5 p-4">
-          <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
+        {/* Mobile-only: eliminated + board below the grid */}
+        <div className="flex flex-col gap-4 mt-4 lg:hidden">
+          <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
+          <div className="rounded-xl border border-white/12 bg-white/5 p-4">
+            <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
+          </div>
         </div>
       </div>
 

@@ -31,7 +31,6 @@ function SpinReveal({
   const cancelledRef = useRef(false);
   const doneCalledRef = useRef(false);
 
-  // If skip is requested mid-spin, jump straight to done
   useEffect(() => {
     if (skip && !doneCalledRef.current) {
       cancelledRef.current = true;
@@ -96,11 +95,8 @@ function SpinReveal({
           className="h-full rounded-full"
           style={{ background: color }}
           initial={{ width: '0%' }}
-          animate={{ width: skip ? '100%' : '100%' }}
-          transition={{
-            duration: skip ? 0.1 : (SPIN_INTERVALS.reduce((s, v) => s + v, 0)) / 1000,
-            ease: 'easeIn',
-          }}
+          animate={{ width: '100%' }}
+          transition={{ duration: skip ? 0.1 : (SPIN_INTERVALS.reduce((s, v) => s + v, 0)) / 1000, ease: 'easeIn' }}
         />
       </div>
     </motion.div>
@@ -144,10 +140,6 @@ function RevealedCard({ box }: { box: Box }) {
 }
 
 export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxGridProps) {
-  // spinningBoxId: currently playing the slot animation
-  // revealedBoxId: spin done, card flipped open, waiting for user to press Next
-  // dismissingBoxId: user pressed Next, card is flying out
-  // skipSpin: user pressed Skip during spin — jump straight to reveal
   const [spinningBoxId, setSpinningBoxId] = useState<number | null>(null);
   const [revealedBoxId, setRevealedBoxId] = useState<number | null>(null);
   const [dismissingBoxId, setDismissingBoxId] = useState<number | null>(null);
@@ -186,25 +178,22 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
     setTimeout(() => {
       setDismissingBoxId(null);
       onSelectBox(id);
-    }, 420);
+    }, 400);
   }
 
   const activeBoxes = boxes.filter(b => !b.isOpen);
   const revealedBox = revealedBoxId !== null
     ? (boxes.find(b => b.id === revealedBoxId) ?? null)
     : null;
-  const revealedTierColor = revealedBox
-    ? TIER_COLORS[revealedBox.anime.tier]
-    : 'rgba(255,255,255,0.6)';
+  const revealedTierColor = revealedBox ? TIER_COLORS[revealedBox.anime.tier] : 'rgba(255,255,255,0.5)';
 
-  // Side panel state: show Skip during spin, Next after reveal
   const showSkip = spinningBoxId !== null && !skipSpin;
   const showNext = revealedBoxId !== null;
 
   return (
-    <div className="flex gap-3 items-center">
-      {/* 3x3 grid */}
-      <div className="flex-1 grid grid-cols-3 gap-3 sm:gap-4">
+    <div className="flex flex-col gap-3">
+      {/* 3×3 grid */}
+      <div className="grid grid-cols-3 gap-3 sm:gap-4">
         {activeBoxes.map(box => {
           const isPlayer = box.id === playerBoxId;
           const isSpinning = spinningBoxId === box.id;
@@ -213,10 +202,8 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
           const showCard = isRevealed || isDismissing;
 
           const canOpen =
-            phase === 'opening' &&
-            !isSpinning && !showCard &&
-            spinningBoxId === null && revealedBoxId === null && dismissingBoxId === null &&
-            !isPlayer;
+            phase === 'opening' && !isSpinning && !showCard &&
+            spinningBoxId === null && revealedBoxId === null && dismissingBoxId === null && !isPlayer;
           const canPick = phase === 'pick_box' && !isPlayer;
           const clickable = canOpen || canPick;
 
@@ -225,12 +212,8 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
               key={box.id}
               onClick={() => handleClick(box)}
               disabled={!clickable}
-              animate={
-                isDismissing
-                  ? { opacity: 0, y: 90, scale: 0.6 }
-                  : { opacity: 1, y: 0, scale: 1 }
-              }
-              transition={isDismissing ? { duration: 0.4, ease: 'easeIn' } : {}}
+              animate={isDismissing ? { opacity: 0, y: 70, scale: 0.6 } : { opacity: 1, y: 0, scale: 1 }}
+              transition={isDismissing ? { duration: 0.38, ease: 'easeIn' } : {}}
               whileHover={clickable ? { scale: 1.04, y: -3 } : {}}
               whileTap={clickable ? { scale: 0.96 } : {}}
               className={clsx(
@@ -260,7 +243,6 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
                 </div>
               )}
 
-              {/* Spin animation */}
               {isSpinning && (
                 <SpinReveal
                   targetTier={box.anime.tier}
@@ -269,74 +251,67 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
                 />
               )}
 
-              {/* Revealed card — stays until Next */}
               {showCard && <RevealedCard box={box} />}
             </motion.button>
           );
         })}
       </div>
 
-      {/* Side panel: Skip (during spin) or Next (after reveal) */}
-      <div className="flex-shrink-0 w-14 flex items-center justify-center">
-        <AnimatePresence mode="wait">
-          {showSkip && (
+      {/* Skip / Next buttons — centred below the grid */}
+      <AnimatePresence mode="wait">
+        {showSkip && (
+          <motion.div
+            key="skip"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="flex justify-center"
+          >
             <motion.button
-              key="skip"
-              initial={{ opacity: 0, x: 20, scale: 0.85 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.85 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               onClick={handleSkip}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              className="flex flex-col items-center gap-2 px-3 py-5 rounded-2xl border cursor-pointer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-6 py-2.5 rounded-xl border cursor-pointer font-bold text-sm"
               style={{
                 border: '1.5px solid rgba(255,255,255,0.12)',
                 color: 'rgba(255,255,255,0.45)',
                 background: 'rgba(255,255,255,0.04)',
-                minHeight: 90,
               }}
             >
-              <span
-                className="text-[9px] uppercase tracking-widest font-black"
-                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-              >
-                Skip
-              </span>
-              <ChevronsRight className="w-3.5 h-3.5" />
+              <ChevronsRight className="w-4 h-4" />
+              Skip
             </motion.button>
-          )}
+          </motion.div>
+        )}
 
-          {showNext && (
+        {showNext && (
+          <motion.div
+            key="next"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2 }}
+            className="flex justify-center"
+          >
             <motion.button
-              key="next"
-              initial={{ opacity: 0, x: 20, scale: 0.85 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 20, scale: 0.85 }}
-              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               onClick={handleNext}
-              whileHover={{ scale: 1.08 }}
-              whileTap={{ scale: 0.92 }}
-              className="flex flex-col items-center gap-2 px-3 py-5 rounded-2xl border cursor-pointer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-2 px-8 py-3 rounded-xl border cursor-pointer font-black text-sm"
               style={{
                 border: `1.5px solid ${revealedTierColor}55`,
                 color: revealedTierColor,
                 background: revealedTierColor + '10',
                 boxShadow: `0 0 20px ${revealedTierColor}20`,
-                minHeight: 90,
               }}
             >
-              <span
-                className="text-[9px] uppercase tracking-widest font-black"
-                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
-              >
-                Next
-              </span>
-              <ChevronDown className="w-3.5 h-3.5" />
+              Next
+              <ChevronDown className="w-4 h-4" />
             </motion.button>
-          )}
-        </AnimatePresence>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
