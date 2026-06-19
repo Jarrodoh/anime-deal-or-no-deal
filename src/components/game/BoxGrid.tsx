@@ -6,7 +6,7 @@ import { Box, AnimeTier, TIER_COLORS } from '@/types';
 import { ANILIST_IDS } from '@/lib/anilist-ids';
 import AnimeImage from './AnimeImage';
 import { clsx } from 'clsx';
-import { ChevronDown, ChevronsRight } from 'lucide-react';
+import { ChevronsRight } from 'lucide-react';
 
 interface BoxGridProps {
   boxes: Box[];
@@ -103,7 +103,7 @@ function SpinReveal({
   );
 }
 
-function RevealedCard({ box }: { box: Box }) {
+function RevealedCard({ box, onNext }: { box: Box; onNext: () => void }) {
   const tierColor = TIER_COLORS[box.anime.tier];
   return (
     <motion.div
@@ -121,19 +121,40 @@ function RevealedCard({ box }: { box: Box }) {
         title={box.anime.title}
         className="w-full h-full"
       />
+
+      {/* Info + Next button overlaid at bottom */}
       <div
-        className="absolute inset-x-0 bottom-0 flex flex-col items-start justify-end px-2 pb-2 pt-8"
-        style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.97) 0%, transparent 100%)' }}
+        className="absolute inset-x-0 bottom-0 flex flex-col items-start px-2 pb-2 pt-10"
+        style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.98) 0%, rgba(14,27,46,0.6) 60%, transparent 100%)' }}
       >
-        <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-1 tier-' + box.anime.tier)}>
+        <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-0.5 tier-' + box.anime.tier)}>
           {box.anime.tier}
         </span>
-        <p className="text-[10px] text-white/80 font-semibold leading-tight line-clamp-2 text-left">
+        <p className="text-[10px] text-white/85 font-semibold leading-tight line-clamp-1 w-full mb-0.5">
           {box.anime.title}
         </p>
-        <p className="text-[11px] font-bold mt-0.5" style={{ color: tierColor }}>
+        <p className="text-[11px] font-bold mb-2" style={{ color: tierColor }}>
           {box.anime.rating.toFixed(1)}
         </p>
+
+        {/* Next button — pops in after card settles */}
+        <motion.button
+          initial={{ opacity: 0, scale: 0.75, y: 6 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ delay: 0.35, type: 'spring', stiffness: 350, damping: 22 }}
+          onClick={e => { e.stopPropagation(); onNext(); }}
+          whileHover={{ scale: 1.04 }}
+          whileTap={{ scale: 0.95 }}
+          className="w-full py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider text-center cursor-pointer"
+          style={{
+            background: tierColor + '28',
+            border: `1px solid ${tierColor}70`,
+            color: tierColor,
+            boxShadow: `0 0 12px ${tierColor}30`,
+          }}
+        >
+          Next →
+        </motion.button>
       </div>
     </motion.div>
   );
@@ -182,13 +203,8 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
   }
 
   const activeBoxes = boxes.filter(b => !b.isOpen);
-  const revealedBox = revealedBoxId !== null
-    ? (boxes.find(b => b.id === revealedBoxId) ?? null)
-    : null;
-  const revealedTierColor = revealedBox ? TIER_COLORS[revealedBox.anime.tier] : 'rgba(255,255,255,0.5)';
 
   const showSkip = spinningBoxId !== null && !skipSpin;
-  const showNext = revealedBoxId !== null;
 
   return (
     <div className="flex flex-col gap-3">
@@ -251,14 +267,14 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
                 />
               )}
 
-              {showCard && <RevealedCard box={box} />}
+              {showCard && <RevealedCard box={box} onNext={handleNext} />}
             </motion.button>
           );
         })}
       </div>
 
-      {/* Skip / Next buttons — centred below the grid */}
-      <AnimatePresence mode="wait">
+      {/* Skip button — centred below grid during spin only */}
+      <AnimatePresence>
         {showSkip && (
           <motion.div
             key="skip"
@@ -281,33 +297,6 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
             >
               <ChevronsRight className="w-4 h-4" />
               Skip
-            </motion.button>
-          </motion.div>
-        )}
-
-        {showNext && (
-          <motion.div
-            key="next"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="flex justify-center"
-          >
-            <motion.button
-              onClick={handleNext}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-8 py-3 rounded-xl border cursor-pointer font-black text-sm"
-              style={{
-                border: `1.5px solid ${revealedTierColor}55`,
-                color: revealedTierColor,
-                background: revealedTierColor + '10',
-                boxShadow: `0 0 20px ${revealedTierColor}20`,
-              }}
-            >
-              Next
-              <ChevronDown className="w-4 h-4" />
             </motion.button>
           </motion.div>
         )}
