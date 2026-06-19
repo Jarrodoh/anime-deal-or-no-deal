@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+:root {
+  --bg-primary: #080d1a;
+  --bg-surface: #0f1628;
+  --bg-card: #151f35;
+  --border: rgba(255, 255, 255, 0.07);
+  --border-glow: rgba(255, 215, 0, 0.3);
+  --gold: #ffd700;
+  --gold-dim: #b8960c;
+  --text-primary: #f0f0f0;
+  --text-secondary: #8899aa;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Inter', system-ui, sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.3); border-radius: 3px; }
+
+.tier-S { color: #FFD700; border-color: #FFD700; }
+.tier-A { color: #C084FC; border-color: #C084FC; }
+.tier-B { color: #60A5FA; border-color: #60A5FA; }
+.tier-C { color: #4ADE80; border-color: #4ADE80; }
+.tier-D { color: #94A3B8; border-color: #94A3B8; }
+.tier-F { color: #F87171; border-color: #F87171; }
+
+.glow-gold { box-shadow: 0 0 20px rgba(255,215,0,0.4), 0 0 60px rgba(255,215,0,0.1); }
+.glow-s { box-shadow: 0 0 24px rgba(255,215,0,0.6), 0 0 80px rgba(255,215,0,0.2); }
+.glow-a { box-shadow: 0 0 20px rgba(192,132,252,0.5); }
+.glow-b { box-shadow: 0 0 20px rgba(96,165,250,0.4); }
+
+@keyframes ring {
+  0%, 100% { transform: rotate(-8deg); }
+  25% { transform: rotate(8deg); }
+  75% { transform: rotate(6deg); }
+}
+.phone-ring { animation: ring 0.35s ease-in-out infinite; }
+
+@keyframes box-reveal {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.12); }
+  70% { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+.box-reveal { animation: box-reveal 0.4s ease; }
+
+@keyframes pulse-gold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,215,0,0); }
+  50% { box-shadow: 0 0 0 6px rgba(255,215,0,0.2); }
+}
+.pulse-gold { animation: pulse-gold 2s ease infinite; }
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.slide-up { animation: slide-up 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.shimmer-gold {
+  background: linear-gradient(90deg, #b8960c 0%, #FFD700 50%, #b8960c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 2.5s linear infinite;
+}
+
+@keyframes float-up {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+}
+.float-up { animation: float-up 1s ease forwards; }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.fade-in { animation: fade-in 0.4s ease; }
+
+@keyframes bounce-in {
+  0% { transform: scale(0.7); opacity: 0; }
+  60% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(1); }
+}
+.bounce-in { animation: bounce-in 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
