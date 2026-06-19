@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGame } from '@/hooks/useGame';
 import BoxGrid from '@/components/game/BoxGrid';
@@ -11,7 +11,7 @@ import OfferModal from '@/components/game/OfferModal';
 import ResultScreen from '@/components/game/ResultScreen';
 import PlayerBoxDisplay from '@/components/game/PlayerBoxDisplay';
 import RoundTracker from '@/components/game/RoundTracker';
-import { getBoxesToOpenThisRound, getPlayerBox, getRemainingBoardBoxes } from '@/lib/game-logic';
+import { getBoxesToOpenThisRound, getPlayerBox } from '@/lib/game-logic';
 import { getTodayString } from '@/lib/daily-seed';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
@@ -25,7 +25,6 @@ export default function GamePage() {
   const { state, pickBox, openABox, showOffer, takeDeal, declineDeal, swap, keepBox, reset } = useGame();
 
   const playerBox = getPlayerBox(state);
-  const remainingBoard = getRemainingBoardBoxes(state);
   const boxesLeft = getBoxesToOpenThisRound(state);
   const today = getTodayString();
 

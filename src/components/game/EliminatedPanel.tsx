@@ -36,8 +36,8 @@ export default function EliminatedPanel({ openedBoxes }: EliminatedPanelProps) {
         </span>
       </div>
 
-      {/* Cards row */}
-      <div className="flex gap-2.5 px-4 py-3 overflow-x-auto">
+      {/* Cards — wrap in the narrow sidebar */}
+      <div className="flex flex-wrap gap-2.5 px-4 py-3">
         {sorted.map(box => {
           const color = TIER_COLORS[box.anime.tier];
           return (
