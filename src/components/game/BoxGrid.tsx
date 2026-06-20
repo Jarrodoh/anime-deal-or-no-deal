@@ -121,8 +121,6 @@ function RevealedCard({ box, onNext }: { box: Box; onNext: () => void }) {
         title={box.anime.title}
         className="w-full h-full"
       />
-
-      {/* Info + Next button overlaid at bottom */}
       <div
         className="absolute inset-x-0 bottom-0 flex flex-col items-start px-2 pb-2 pt-14"
         style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.99) 0%, rgba(14,27,46,0.75) 55%, transparent 100%)' }}
@@ -137,7 +135,7 @@ function RevealedCard({ box, onNext }: { box: Box; onNext: () => void }) {
           {box.anime.rating.toFixed(1)}
         </p>
 
-        {/* Next button — pops in after card settles */}
+        {/* Next button — pops in after card settles. This is a real <button> inside a <div>, so it works. */}
         <motion.button
           initial={{ opacity: 0, scale: 0.75, y: 6 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -203,13 +201,12 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
   }
 
   const activeBoxes = boxes.filter(b => !b.isOpen);
-
   const showSkip = spinningBoxId !== null && !skipSpin;
 
   return (
-    <div className="flex flex-col gap-3">
-      {/* 3×3 grid */}
-      <div className="grid grid-cols-3 gap-3 sm:gap-4">
+    <div className="flex gap-3 items-stretch">
+      {/* 3×3 grid — cells are divs (not buttons) so RevealedCard's inner button works correctly */}
+      <div className="flex-1 grid grid-cols-3 gap-3 sm:gap-4">
         {activeBoxes.map(box => {
           const isPlayer = box.id === playerBoxId;
           const isSpinning = spinningBoxId === box.id;
@@ -224,10 +221,10 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
           const clickable = canOpen || canPick;
 
           return (
-            <motion.button
+            // div instead of button — avoids invalid nested <button> when RevealedCard is shown
+            <motion.div
               key={box.id}
               onClick={() => handleClick(box)}
-              disabled={!clickable}
               animate={isDismissing ? { opacity: 0, y: 70, scale: 0.6 } : { opacity: 1, y: 0, scale: 1 }}
               transition={isDismissing ? { duration: 0.38, ease: 'easeIn' } : {}}
               whileHover={clickable ? { scale: 1.04, y: -3 } : {}}
@@ -238,8 +235,8 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
                 isPlayer && !showCard && 'border-yellow-400/70 bg-yellow-400/10',
                 canPick && 'border-white/25 bg-white/6 hover:border-yellow-400/50 hover:bg-yellow-400/6 cursor-pointer',
                 canOpen && 'border-white/25 bg-white/6 hover:border-blue-400/50 hover:bg-blue-400/6 cursor-pointer',
-                (isSpinning || showCard || isDismissing) && 'border-transparent cursor-default',
-                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-white/8 bg-white/3 cursor-default opacity-40',
+                (isSpinning || showCard || isDismissing) && 'border-transparent',
+                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-white/8 bg-white/3 opacity-40',
               )}
               style={isPlayer && !showCard ? { boxShadow: '0 0 22px rgba(250,204,21,0.25)' } : {}}
             >
@@ -268,39 +265,42 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
               )}
 
               {showCard && <RevealedCard box={box} onNext={handleNext} />}
-            </motion.button>
+            </motion.div>
           );
         })}
       </div>
 
-      {/* Skip button — centred below grid during spin only */}
-      <AnimatePresence>
-        {showSkip && (
-          <motion.div
-            key="skip"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.2 }}
-            className="flex justify-center"
-          >
+      {/* Skip button — right side of grid, visible during spin */}
+      <div className="flex-shrink-0 w-12 flex items-center justify-center">
+        <AnimatePresence>
+          {showSkip && (
             <motion.button
+              key="skip"
+              initial={{ opacity: 0, x: 16, scale: 0.8 }}
+              animate={{ opacity: 1, x: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 16, scale: 0.8 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               onClick={handleSkip}
-              whileHover={{ scale: 1.04 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-xl border cursor-pointer font-bold text-sm"
+              whileHover={{ scale: 1.08 }}
+              whileTap={{ scale: 0.92 }}
+              className="flex flex-col items-center gap-2 px-2.5 py-5 rounded-2xl border cursor-pointer"
               style={{
                 border: '1.5px solid rgba(255,255,255,0.12)',
-                color: 'rgba(255,255,255,0.45)',
+                color: 'rgba(255,255,255,0.5)',
                 background: 'rgba(255,255,255,0.04)',
               }}
             >
-              <ChevronsRight className="w-4 h-4" />
-              Skip
+              <span
+                className="text-[9px] uppercase tracking-widest font-black"
+                style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
+              >
+                Skip
+              </span>
+              <ChevronsRight className="w-3.5 h-3.5" />
             </motion.button>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
