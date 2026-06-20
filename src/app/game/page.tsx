@@ -351,6 +351,12 @@ export default function GamePage() {
               onCallComplete={handleBankerCallComplete}
               boxesLeft={state.boxes.filter(b => !b.isOpen && !b.isPlayerBox).length}
               round={state.currentRound}
+              playerBoxRank={(() => {
+                const pb = state.boxes.find(b => b.isPlayerBox);
+                if (!pb) return undefined;
+                const sorted = [...state.boxes].sort((a, b) => b.anime.rating - a.anime.rating);
+                return sorted.findIndex(b => b.id === pb.id) + 1;
+              })()}
             />
           </motion.div>
         )}

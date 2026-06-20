@@ -8,10 +8,20 @@ interface BankerCallProps {
   onCallComplete: () => void;
   boxesLeft: number;
   round: number;
+  playerBoxRank?: number; // rank of the player's own box among all 9 by rating (1 = best)
 }
 
-function buildStages(boxesLeft: number, round: number) {
-  const mid: string[] = [
+function buildStages(boxesLeft: number, round: number, playerBoxRank?: number) {
+  const isTop3 = playerBoxRank !== undefined && playerBoxRank <= 3;
+
+  // Mid-call lines — replace with mocking ones if player is holding a top-3 anime
+  const mid: string[] = isTop3 ? [
+    playerBoxRank === 1
+      ? "Wait. Hold on. The #1 anime is in YOUR box. Why are you even here."
+      : `Bro is sitting on the #${playerBoxRank} anime and still gambling. Respect. (not really)`,
+    `Your box is literally top ${playerBoxRank} on the whole board. I can't with you.`,
+    `${playerBoxRank === 1 ? 'THE best' : `A top ${playerBoxRank}`} anime. In your hands. And you're opening more boxes. Wow.`,
+  ] : [
     `Oh I see you still got ${boxesLeft} boxes left on the board...`,
     `${boxesLeft} boxes remaining. One of them is yours. Bold strategy.`,
     `Round ${round} already? You move fast. Maybe too fast.`,
@@ -19,7 +29,12 @@ function buildStages(boxesLeft: number, round: number) {
     `I've been watching. ${boxesLeft} boxes. One is yours. Interesting.`,
   ];
 
-  const end: string[] = [
+  // End lines — also shade player if they're top 3
+  const end: string[] = isTop3 ? [
+    "I'm making you an offer. You should probably just say no deal and go home.",
+    "This offer exists. You don't need it. But here we are.",
+    `Preparing a number for someone holding top ${playerBoxRank}... this is painful to watch.`,
+  ] : [
     "An offer is being prepared... it's generous. For me.",
     "The numbers have been run. You have not.",
     "Be honest — you're kinda curious what I'm about to offer.",
@@ -31,14 +46,14 @@ function buildStages(boxesLeft: number, round: number) {
 
   return [
     { label: 'Incoming call from the Banker...', duration: 2200 },
-    { label: pick(mid), duration: 2800 },
+    { label: pick(mid), duration: 3000 },
     { label: pick(end), duration: 2800 },
   ];
 }
 
-export default function BankerCall({ onCallComplete, boxesLeft, round }: BankerCallProps) {
+export default function BankerCall({ onCallComplete, boxesLeft, round, playerBoxRank }: BankerCallProps) {
   // Build stages once on mount so they don't re-randomise on re-render
-  const stages = useRef(buildStages(boxesLeft, round)).current;
+  const stages = useRef(buildStages(boxesLeft, round, playerBoxRank)).current;
   const [stage, setStage] = useState(0);
 
   // Stable ref to onCallComplete so the effect doesn't restart when the

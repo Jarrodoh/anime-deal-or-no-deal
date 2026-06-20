@@ -329,6 +329,12 @@ export default function PartyRoomPage() {
               onCallComplete={handleBankerCallComplete}
               boxesLeft={displayState.boxes.filter((b: import('@/types').Box) => !b.isOpen && !b.isPlayerBox).length}
               round={displayState.currentRound}
+              playerBoxRank={(() => {
+                const pb = displayState.boxes.find((b: import('@/types').Box) => b.isPlayerBox);
+                if (!pb) return undefined;
+                const sorted = [...displayState.boxes].sort((a: import('@/types').Box, b: import('@/types').Box) => b.anime.rating - a.anime.rating);
+                return sorted.findIndex((b: import('@/types').Box) => b.id === pb.id) + 1;
+              })()}
             />
           </motion.div>
         )}
