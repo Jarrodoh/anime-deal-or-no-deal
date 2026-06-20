@@ -11,25 +11,28 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ url: null }, { status: 400 });
   }
 
+  const cacheHeaders = { 'Cache-Control': 'public, max-age=86400, s-maxage=604800' };
+
   if (cache.has(id)) {
-    return NextResponse.json({ url: cache.get(id) ?? null });
+    return NextResponse.json({ url: cache.get(id) ?? null }, { headers: cacheHeaders });
   }
 
   try {
     const res = await fetch('https://graphql.anilist.co', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      // medium cover loads faster than large — smaller file, same CDN
       body: JSON.stringify({
-        query: 'query ($id: Int) { Media(id: $id, type: ANIME) { coverImage { large } } }',
+        query: 'query ($id: Int) { Media(id: $id, type: ANIME) { coverImage { medium } } }',
         variables: { id },
       }),
     });
 
     const data = await res.json();
-    const url: string | null = data?.data?.Media?.coverImage?.large ?? null;
+    const url: string | null = data?.data?.Media?.coverImage?.medium ?? null;
     cache.set(id, url);
 
-    return NextResponse.json({ url });
+    return NextResponse.json({ url }, { headers: cacheHeaders });
   } catch {
     cache.set(id, null);
     return NextResponse.json({ url: null });

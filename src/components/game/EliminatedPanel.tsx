@@ -19,19 +19,19 @@ export default function EliminatedPanel({ openedBoxes }: EliminatedPanelProps) {
     <motion.div
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
-      className="rounded-2xl border border-white/8 overflow-hidden"
-      style={{ background: 'rgba(255,255,255,0.03)' }}
+      className="rounded-2xl border border-white/10 overflow-hidden"
+      style={{ background: 'rgba(255,255,255,0.05)' }}
     >
       {/* Header */}
-      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/6"
-        style={{ background: 'rgba(0,0,0,0.15)' }}>
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="2" strokeLinecap="round">
+      <div className="flex items-center gap-2 px-4 py-2.5 border-b border-white/8"
+        style={{ background: 'rgba(255,255,255,0.03)' }}>
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="rgba(255,255,255,0.35)" strokeWidth="2" strokeLinecap="round">
           <polyline points="3 6 5 6 21 6" />
           <path d="M19 6l-1 14H6L5 6" />
           <path d="M10 11v6M14 11v6" />
           <path d="M9 6V4h6v2" />
         </svg>
-        <span className="text-[10px] font-bold uppercase tracking-widest text-white/30">
+        <span className="text-[10px] font-bold uppercase tracking-widest text-white/40">
           Eliminated — {openedBoxes.length} box{openedBoxes.length !== 1 ? 'es' : ''}
         </span>
       </div>

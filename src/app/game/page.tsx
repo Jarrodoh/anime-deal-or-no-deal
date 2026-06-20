@@ -121,7 +121,7 @@ export default function GamePage() {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Header */}
-      <header className="sticky top-0 z-20 px-4 py-3 border-b border-white/6" style={{ background: 'rgba(14,27,46,0.96)', backdropFilter: 'blur(12px)' }}>
+      <header className="sticky top-0 z-20 px-4 py-3 border-b border-white/8" style={{ background: 'rgba(0,0,0,0.97)', backdropFilter: 'blur(12px)' }}>
         <div className="max-w-6xl mx-auto flex items-center gap-4">
           <Link href="/" className="text-white/40 hover:text-white/80 transition-colors">
             <ChevronLeft className="w-5 h-5" />
@@ -239,7 +239,7 @@ export default function GamePage() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-40 flex items-center justify-center"
-            style={{ background: 'rgba(14,27,46,0.92)', backdropFilter: 'blur(8px)' }}
+            style={{ background: 'rgba(0,0,0,0.93)', backdropFilter: 'blur(8px)' }}
           >
             <BankerCall
               onCallComplete={handleBankerCallComplete}

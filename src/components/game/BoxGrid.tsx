@@ -123,7 +123,7 @@ function RevealedCard({ box, onNext }: { box: Box; onNext: () => void }) {
       />
       <div
         className="absolute inset-x-0 bottom-0 flex flex-col items-start px-2 pb-2 pt-14"
-        style={{ background: 'linear-gradient(to top, rgba(14,27,46,0.99) 0%, rgba(14,27,46,0.75) 55%, transparent 100%)' }}
+        style={{ background: 'linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.72) 55%, transparent 100%)' }}
       >
         <span className={clsx('text-[9px] font-black border rounded px-1.5 py-0.5 mb-1 tier-' + box.anime.tier)}>
           {box.anime.tier}
@@ -232,27 +232,27 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
               className={clsx(
                 'relative flex flex-col items-center justify-center rounded-2xl border transition-colors duration-200 overflow-hidden select-none',
                 'h-40 sm:h-44 md:h-48',
-                isPlayer && !showCard && 'border-yellow-400/70 bg-yellow-400/10',
-                canPick && 'border-white/25 bg-white/6 hover:border-yellow-400/50 hover:bg-yellow-400/6 cursor-pointer',
-                canOpen && 'border-white/25 bg-white/6 hover:border-blue-400/50 hover:bg-blue-400/6 cursor-pointer',
+                isPlayer && !showCard && 'border-yellow-400 bg-yellow-50',
+                canPick && 'border-black/12 bg-white hover:border-yellow-400 hover:bg-yellow-50 cursor-pointer',
+                canOpen && 'border-black/12 bg-white hover:border-blue-400/60 hover:bg-blue-50/40 cursor-pointer',
                 (isSpinning || showCard || isDismissing) && 'border-transparent',
-                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-white/8 bg-white/3 opacity-40',
+                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-white/10 bg-white/6 opacity-40',
               )}
               style={isPlayer && !showCard ? { boxShadow: '0 0 22px rgba(250,204,21,0.25)' } : {}}
             >
               {/* Closed */}
               {!isSpinning && !showCard && (
                 <div className="flex flex-col items-center justify-center gap-1.5">
-                  <span className={clsx('text-4xl font-black tabular-nums', isPlayer ? 'text-yellow-300' : 'text-white/55')}>
+                  <span className={clsx('text-4xl font-black tabular-nums', isPlayer ? 'text-yellow-600' : 'text-black/55')}>
                     {box.id}
                   </span>
                   {isPlayer && (
-                    <span className="text-[10px] text-yellow-400 tracking-widest uppercase font-semibold border border-yellow-400/40 px-2 py-0.5 rounded-full">
+                    <span className="text-[10px] text-yellow-600 tracking-widest uppercase font-semibold border border-yellow-400/60 px-2 py-0.5 rounded-full">
                       Your box
                     </span>
                   )}
-                  {canOpen && <span className="text-[9px] text-blue-400/50 tracking-wide uppercase">tap to open</span>}
-                  {canPick && <span className="text-[9px] text-white/25 tracking-wide uppercase">pick this</span>}
+                  {canOpen && <span className="text-[9px] text-blue-500/60 tracking-wide uppercase">tap to open</span>}
+                  {canPick && <span className="text-[9px] text-black/30 tracking-wide uppercase">pick this</span>}
                 </div>
               )}
 
