@@ -218,6 +218,18 @@ export default function GamePage() {
         </div>
       </div>
 
+      {/* Offer modal — fixed overlay, was accidentally removed in layout refactor */}
+      <AnimatePresence>
+        {state.phase === 'offer' && state.currentOffer && !showingBankerCall && (
+          <OfferModal
+            key="offer"
+            offer={state.currentOffer}
+            onDeal={takeDeal}
+            onNoDeal={declineDeal}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Banker call overlay */}
       <AnimatePresence>
         {showingBankerCall && (
@@ -229,7 +241,11 @@ export default function GamePage() {
             className="fixed inset-0 z-40 flex items-center justify-center"
             style={{ background: 'rgba(14,27,46,0.92)', backdropFilter: 'blur(8px)' }}
           >
-            <BankerCall onCallComplete={handleBankerCallComplete} />
+            <BankerCall
+              onCallComplete={handleBankerCallComplete}
+              boxesLeft={state.boxes.filter(b => !b.isOpen && !b.isPlayerBox).length}
+              round={state.currentRound}
+            />
           </motion.div>
         )}
       </AnimatePresence>

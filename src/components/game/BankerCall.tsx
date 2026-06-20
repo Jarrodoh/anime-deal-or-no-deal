@@ -1,22 +1,50 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Phone } from 'lucide-react';
 
 interface BankerCallProps {
   onCallComplete: () => void;
+  boxesLeft: number;
+  round: number;
 }
 
-const CALL_STAGES = [
-  { label: 'Incoming call from the Banker...', duration: 2200 },
-  { label: 'The Banker is evaluating your board...', duration: 2800 },
-  { label: 'An offer is being prepared...', duration: 2800 },
-];
+function buildStages(boxesLeft: number, round: number) {
+  const mid: string[] = [
+    `Oh I see you still got ${boxesLeft} boxes left on the board...`,
+    `${boxesLeft} boxes remaining. One of them is yours. Bold strategy.`,
+    `Round ${round} already? You move fast. Maybe too fast.`,
+    `So you've been opening boxes. ${boxesLeft} left. Let's talk.`,
+    `I've been watching. ${boxesLeft} boxes. One is yours. Interesting.`,
+  ];
 
-export default function BankerCall({ onCallComplete }: BankerCallProps) {
+  const end: string[] = [
+    "An offer is being prepared... it's generous. For me.",
+    "The numbers have been run. You have not.",
+    "Be honest — you're kinda curious what I'm about to offer.",
+    "The banker doesn't lose. He just lets you feel good first.",
+    "Crunching numbers... this might sting a little.",
+  ];
+
+  const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];
+
+  return [
+    { label: 'Incoming call from the Banker...', duration: 2200 },
+    { label: pick(mid), duration: 2800 },
+    { label: pick(end), duration: 2800 },
+  ];
+}
+
+export default function BankerCall({ onCallComplete, boxesLeft, round }: BankerCallProps) {
+  // Build stages once on mount so they don't re-randomise on re-render
+  const stages = useRef(buildStages(boxesLeft, round)).current;
   const [stage, setStage] = useState(0);
-  const [ringing, setRinging] = useState(true);
+
+  // Stable ref to onCallComplete so the effect doesn't restart when the
+  // parent re-renders and creates a new function reference
+  const callbackRef = useRef(onCallComplete);
+  useEffect(() => { callbackRef.current = onCallComplete; }, [onCallComplete]);
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>;
@@ -24,18 +52,19 @@ export default function BankerCall({ onCallComplete }: BankerCallProps) {
     function advance() {
       setStage(s => {
         const next = s + 1;
-        if (next >= CALL_STAGES.length) {
-          timeout = setTimeout(onCallComplete, 1200);
+        if (next >= stages.length) {
+          timeout = setTimeout(() => callbackRef.current(), 1200);
           return s;
         }
-        timeout = setTimeout(advance, CALL_STAGES[next].duration);
+        timeout = setTimeout(advance, stages[next].duration);
         return next;
       });
     }
 
-    timeout = setTimeout(advance, CALL_STAGES[0].duration);
+    timeout = setTimeout(advance, stages[0].duration);
     return () => clearTimeout(timeout);
-  }, [onCallComplete]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally empty — run once on mount
 
   return (
     <motion.div
@@ -46,26 +75,19 @@ export default function BankerCall({ onCallComplete }: BankerCallProps) {
       {/* Animated phone */}
       <div className="relative">
         <motion.div
-          animate={ringing ? { rotate: [-8, 8, -6, 6, -4, 4, 0] } : {}}
+          animate={{ rotate: [-8, 8, -6, 6, -4, 4, 0] }}
           transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 0.3 }}
           className="w-20 h-20 rounded-full border-2 border-yellow-400/40 bg-yellow-400/10 flex items-center justify-center"
         >
           <Phone className="w-10 h-10 text-yellow-400" />
         </motion.div>
-
-        {/* Ripple rings */}
         {[0, 1, 2].map(i => (
           <motion.div
             key={i}
             className="absolute inset-0 rounded-full border border-yellow-400/20"
             initial={{ scale: 1, opacity: 0.6 }}
             animate={{ scale: 2 + i * 0.6, opacity: 0 }}
-            transition={{
-              duration: 1.5,
-              repeat: Infinity,
-              delay: i * 0.4,
-              ease: 'easeOut',
-            }}
+            transition={{ duration: 1.5, repeat: Infinity, delay: i * 0.4, ease: 'easeOut' }}
           />
         ))}
       </div>
@@ -75,9 +97,9 @@ export default function BankerCall({ onCallComplete }: BankerCallProps) {
         key={stage}
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        className="text-center"
+        className="text-center max-w-sm px-4"
       >
-        <p className="text-white/90 font-medium text-lg">{CALL_STAGES[stage]?.label}</p>
+        <p className="text-white/90 font-medium text-lg leading-snug">{stages[stage]?.label}</p>
         <div className="flex justify-center gap-1 mt-3">
           {[0, 1, 2].map(i => (
             <motion.div

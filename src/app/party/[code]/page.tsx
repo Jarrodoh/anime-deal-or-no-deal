@@ -325,7 +325,11 @@ export default function PartyRoomPage() {
             className="fixed inset-0 z-40 flex items-center justify-center"
             style={{ background: 'rgba(8,13,26,0.92)', backdropFilter: 'blur(8px)' }}
           >
-            <BankerCall onCallComplete={handleBankerCallComplete} />
+            <BankerCall
+              onCallComplete={handleBankerCallComplete}
+              boxesLeft={displayState.boxes.filter((b: import('@/types').Box) => !b.isOpen && !b.isPlayerBox).length}
+              round={displayState.currentRound}
+            />
           </motion.div>
         )}
       </AnimatePresence>
