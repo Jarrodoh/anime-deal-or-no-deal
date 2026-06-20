@@ -33,13 +33,15 @@ function buildStages(boxesLeft: number, round: number, playerBoxRank?: number) {
   const end: string[] = isTop3 ? [
     "I'm making you an offer. You should probably just say no deal and go home.",
     "This offer exists. You don't need it. But here we are.",
-    `Preparing a number for someone holding top ${playerBoxRank}... this is painful to watch.`,
+    `Preparing a number for someone holding top ${playerBoxRank}... this is genuinely painful to watch.`,
+    "You could end this right now. But you won't. That's on you.",
   ] : [
-    "An offer is being prepared... it's generous. For me.",
     "The numbers have been run. You have not.",
     "Be honest — you're kinda curious what I'm about to offer.",
-    "The banker doesn't lose. He just lets you feel good first.",
     "Crunching numbers... this might sting a little.",
+    "Preparing something for you. Manage your expectations.",
+    "The offer is almost ready. Take a breath.",
+    "One moment. This requires some... creative accounting.",
   ];
 
   const pick = (arr: string[]) => arr[Math.floor(Math.random() * arr.length)];

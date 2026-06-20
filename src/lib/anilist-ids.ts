@@ -52,7 +52,7 @@ export const ANILIST_IDS: Record<string, number> = {
   steins_gate_0: 21127,
   akira: 47,
   samurai_champloo: 205,
-  made_in_abyss_s2: 131681,
+  made_in_abyss_s2: 136802,
   promised_neverland: 108049,
   clannad: 2167,
   '86_part1': 116589,
