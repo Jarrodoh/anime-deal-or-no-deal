@@ -13,16 +13,34 @@ import PlayerBoxDisplay from '@/components/game/PlayerBoxDisplay';
 import RoundTracker from '@/components/game/RoundTracker';
 import { getBoxesToOpenThisRound, getPlayerBox } from '@/lib/game-logic';
 import { getTodayString } from '@/lib/daily-seed';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, Shuffle, Phone } from 'lucide-react';
 import Link from 'next/link';
+import { Anime } from '@/types';
+
+const FRIEND_LINES = [
+  (box: number, title: string) => [`"ok so I peeked... Box ${box} is ${title}."`, "idk man just trust me"],
+  (box: number, title: string) => [`"Box ${box}. ${title}. 100% sure."`, "...or like 60%. same thing"],
+  (box: number, title: string) => [`"ngl Box ${box} is giving ${title} vibes"`, "could be wrong tho ngl"],
+  (box: number, title: string) => [`"I checked and Box ${box} has ${title}"`, "but also don't hold me to that"],
+  (box: number, title: string) => [`"Box ${box} = ${title}, trust the process"`, "the process may be flawed"],
+];
+
+function friendRevealLines(boxId: number, title: string): string[] {
+  const pick = FRIEND_LINES[Math.floor(Math.random() * FRIEND_LINES.length)];
+  return pick(boxId, title);
+}
 
 export default function GamePage() {
   const [playerName, setPlayerName] = useState('');
   const [nameSubmitted, setNameSubmitted] = useState(false);
   const [showingBankerCall, setShowingBankerCall] = useState(false);
   const [lastOpenedTitle, setLastOpenedTitle] = useState<string | null>(null);
+  const [reshuffleUses, setReshuffleUses] = useState(1);
+  const [friendUses, setFriendUses] = useState(1);
+  const [friendReveal, setFriendReveal] = useState<{ boxId: number; anime: Anime } | null>(null);
+  const [reshuffleFlash, setReshuffleFlash] = useState(false);
 
-  const { state, pickBox, openABox, showOffer, takeDeal, declineDeal, swap, keepBox, reset } = useGame();
+  const { state, pickBox, openABox, showOffer, takeDeal, declineDeal, swap, keepBox, reset, reshuffle } = useGame();
 
   const playerBox = getPlayerBox(state);
   const boxesLeft = getBoxesToOpenThisRound(state);
@@ -44,6 +62,45 @@ export default function GamePage() {
     const box = state.boxes.find(b => b.id === boxId);
     if (box) setLastOpenedTitle(box.anime.title);
     openABox(boxId);
+  }
+
+  function handleReshuffle() {
+    if (reshuffleUses <= 0 || state.phase !== 'pick_box') return;
+    setReshuffleUses(0);
+    reshuffle();
+    setReshuffleFlash(true);
+    setTimeout(() => setReshuffleFlash(false), 800);
+  }
+
+  function handleCallFriend() {
+    if (friendUses <= 0) return;
+    const eligible = state.boxes.filter(b => !b.isOpen && !b.isPlayerBox);
+    if (eligible.length === 0) return;
+    setFriendUses(0);
+
+    // Weight: lower rated anime are more likely to be pointed at
+    const maxRating = Math.max(...eligible.map(b => b.anime.rating));
+    const weights = eligible.map(b => maxRating - b.anime.rating + 1);
+    const totalWeight = weights.reduce((s, w) => s + w, 0);
+
+    let rand = Math.random() * totalWeight;
+    let pickedBox = eligible[eligible.length - 1];
+    for (let i = 0; i < eligible.length; i++) {
+      rand -= weights[i];
+      if (rand <= 0) { pickedBox = eligible[i]; break; }
+    }
+
+    // 90% chance friend is lying — shows a different box's anime
+    const isLying = Math.random() < 0.9;
+    let shownAnime = pickedBox.anime;
+    if (isLying) {
+      const others = eligible.filter(b => b.id !== pickedBox.id);
+      if (others.length > 0) {
+        shownAnime = others[Math.floor(Math.random() * others.length)].anime;
+      }
+    }
+
+    setFriendReveal({ boxId: pickedBox.id, anime: shownAnime });
   }
 
   async function handleSaveScore(name: string, anime: typeof state.finalAnime) {
@@ -158,6 +215,53 @@ export default function GamePage() {
               )}
             </AnimatePresence>
 
+            {/* Powerup bar */}
+            <AnimatePresence>
+              {(state.phase === 'pick_box' || state.phase === 'opening') && (
+                <motion.div
+                  key="powerups"
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="flex gap-2 justify-center"
+                >
+                  {state.phase === 'pick_box' && (
+                    <motion.button
+                      onClick={handleReshuffle}
+                      disabled={reshuffleUses <= 0}
+                      whileHover={reshuffleUses > 0 ? { scale: 1.04 } : {}}
+                      whileTap={reshuffleUses > 0 ? { scale: 0.96 } : {}}
+                      animate={reshuffleFlash ? { scale: [1, 1.12, 0.96, 1] } : {}}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all"
+                      style={reshuffleUses > 0
+                        ? { border: '1px solid rgba(250,204,21,0.5)', color: '#fbbf24', background: 'rgba(250,204,21,0.08)', cursor: 'pointer' }
+                        : { border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.2)', background: 'transparent', cursor: 'not-allowed' }
+                      }
+                    >
+                      <Shuffle className="w-3.5 h-3.5" />
+                      Reshuffle
+                      <span className="text-[10px] opacity-60">{reshuffleUses > 0 ? '1 use' : 'used'}</span>
+                    </motion.button>
+                  )}
+                  <motion.button
+                    onClick={handleCallFriend}
+                    disabled={friendUses <= 0}
+                    whileHover={friendUses > 0 ? { scale: 1.04 } : {}}
+                    whileTap={friendUses > 0 ? { scale: 0.96 } : {}}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold border transition-all"
+                    style={friendUses > 0
+                      ? { border: '1px solid rgba(96,165,250,0.5)', color: '#60a5fa', background: 'rgba(96,165,250,0.08)', cursor: 'pointer' }
+                      : { border: '1px solid rgba(255,255,255,0.08)', color: 'rgba(255,255,255,0.2)', background: 'transparent', cursor: 'not-allowed' }
+                    }
+                  >
+                    <Phone className="w-3.5 h-3.5" />
+                    Call a Friend
+                    <span className="text-[10px] opacity-60">{friendUses > 0 ? '1 use' : 'used'}</span>
+                  </motion.button>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             {/* BoxGrid — Skip/Next render as centred buttons below the grid */}
             <BoxGrid
               boxes={state.boxes}
@@ -246,6 +350,52 @@ export default function GamePage() {
               boxesLeft={state.boxes.filter(b => !b.isOpen && !b.isPlayerBox).length}
               round={state.currentRound}
             />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Call a Friend reveal */}
+      <AnimatePresence>
+        {friendReveal && (
+          <motion.div
+            key="friend"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-end justify-center pb-10 px-4"
+            style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(6px)' }}
+            onClick={() => setFriendReveal(null)}
+          >
+            <motion.div
+              initial={{ y: 60, opacity: 0, scale: 0.92 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: 60, opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 280, damping: 24 }}
+              onClick={e => e.stopPropagation()}
+              className="w-full max-w-sm rounded-2xl border border-white/10 p-5"
+              style={{ background: '#0f172a' }}
+            >
+              <div className="flex items-start gap-3 mb-4">
+                <div className="w-10 h-10 rounded-full bg-blue-500/20 border border-blue-400/30 flex items-center justify-center text-lg flex-shrink-0">
+                  🧑‍💻
+                </div>
+                <div>
+                  <p className="text-xs text-white/40 mb-1">Your friend says...</p>
+                  {friendRevealLines(friendReveal.boxId, friendReveal.anime.title).map((line, i) => (
+                    <p key={i} className={i === 0 ? 'text-white font-semibold text-sm' : 'text-white/40 text-xs mt-1'}>{line}</p>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-[10px] text-white/20 italic">90% chance they&apos;re trolling you</p>
+                <button
+                  onClick={() => setFriendReveal(null)}
+                  className="text-xs font-bold px-3 py-1.5 rounded-lg bg-white/8 text-white/60 hover:bg-white/12 transition-colors"
+                >
+                  Got it
+                </button>
+              </div>
+            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>

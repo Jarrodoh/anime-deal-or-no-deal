@@ -48,6 +48,20 @@ export function useGame(dateStr?: string) {
     setState(s => keepOwnBox(s));
   }, []);
 
+  const reshuffle = useCallback(() => {
+    setState(s => {
+      if (s.phase !== 'pick_box') return s;
+      const animes = s.boxes.map(b => b.anime);
+      // Fisher-Yates shuffle
+      for (let i = animes.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [animes[i], animes[j]] = [animes[j], animes[i]];
+      }
+      const boxes = s.boxes.map((b, idx) => ({ ...b, anime: animes[idx] }));
+      return { ...s, boxes };
+    });
+  }, []);
+
   const reset = useCallback((newDateStr?: string) => {
     setState(initGameState(newDateStr ?? dateStr));
   }, [dateStr]);
@@ -62,5 +76,6 @@ export function useGame(dateStr?: string) {
     swap,
     keepBox,
     reset,
+    reshuffle,
   };
 }

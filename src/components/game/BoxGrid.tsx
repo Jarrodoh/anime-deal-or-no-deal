@@ -230,29 +230,27 @@ export default function BoxGrid({ boxes, playerBoxId, phase, onSelectBox }: BoxG
               whileHover={clickable ? { scale: 1.04, y: -3 } : {}}
               whileTap={clickable ? { scale: 0.96 } : {}}
               className={clsx(
-                'relative flex flex-col items-center justify-center rounded-2xl border transition-colors duration-200 overflow-hidden select-none',
+                'relative flex flex-col items-center justify-center rounded-2xl transition-colors duration-200 overflow-hidden select-none',
                 'h-40 sm:h-44 md:h-48',
-                isPlayer && !showCard && 'border-yellow-400 bg-yellow-50',
-                canPick && 'border-black/12 bg-white hover:border-yellow-400 hover:bg-yellow-50 cursor-pointer',
-                canOpen && 'border-black/12 bg-white hover:border-blue-400/60 hover:bg-blue-50/40 cursor-pointer',
-                (isSpinning || showCard || isDismissing) && 'border-transparent',
-                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-white/10 bg-white/6 opacity-40',
+                isPlayer && !showCard && 'border-2 border-yellow-400 bg-yellow-50',
+                canPick && 'border-2 border-gray-300 bg-white hover:border-yellow-400 hover:bg-yellow-50 cursor-pointer',
+                canOpen && 'border-2 border-gray-300 bg-white hover:border-blue-400 hover:bg-blue-50/40 cursor-pointer',
+                (isSpinning || showCard || isDismissing) && 'border-2 border-transparent',
+                !clickable && !isSpinning && !showCard && !isDismissing && !isPlayer && 'border-2 border-white/12 bg-white/6 opacity-40',
               )}
               style={isPlayer && !showCard ? { boxShadow: '0 0 22px rgba(250,204,21,0.25)' } : {}}
             >
               {/* Closed */}
               {!isSpinning && !showCard && (
                 <div className="flex flex-col items-center justify-center gap-1.5">
-                  <span className={clsx('text-4xl font-black tabular-nums', isPlayer ? 'text-yellow-600' : 'text-black/55')}>
+                  <span className={clsx('text-6xl font-black tabular-nums leading-none', isPlayer ? 'text-yellow-600' : 'text-black/50')}>
                     {box.id}
                   </span>
                   {isPlayer && (
-                    <span className="text-[10px] text-yellow-600 tracking-widest uppercase font-semibold border border-yellow-400/60 px-2 py-0.5 rounded-full">
+                    <span className="mt-2 text-[10px] text-yellow-600 tracking-widest uppercase font-semibold border border-yellow-400/60 px-2 py-0.5 rounded-full">
                       Your box
                     </span>
                   )}
-                  {canOpen && <span className="text-[9px] text-blue-500/60 tracking-wide uppercase">tap to open</span>}
-                  {canPick && <span className="text-[9px] text-black/30 tracking-wide uppercase">pick this</span>}
                 </div>
               )}
 
