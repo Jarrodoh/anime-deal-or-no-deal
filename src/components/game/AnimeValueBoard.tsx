@@ -21,8 +21,8 @@ export default function AnimeValueBoard({ openedAnime, seed }: AnimeValueBoardPr
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-2 pb-2 border-b border-white/8">
-        <span className="text-[10px] font-black tracking-widest uppercase text-white/40">Board</span>
-        <span className="text-[10px] tabular-nums text-white/22">{remaining.length} / {sorted.length} left</span>
+        <span className="text-[10px] font-black tracking-widest uppercase text-white/70">Board</span>
+        <span className="text-[10px] font-semibold tabular-nums text-white/55">{remaining.length} / {sorted.length} left</span>
       </div>
 
       {/* Ranked rows */}
@@ -39,7 +39,7 @@ export default function AnimeValueBoard({ openedAnime, seed }: AnimeValueBoardPr
               className="flex items-center gap-2 py-[7px] border-b border-white/5 last:border-0"
             >
               {/* Rank */}
-              <span className="w-4 text-[9px] font-bold tabular-nums text-right text-white/18 flex-shrink-0">
+              <span className="w-4 text-[9px] font-bold tabular-nums text-right text-white/45 flex-shrink-0">
                 {idx + 1}
               </span>
 
