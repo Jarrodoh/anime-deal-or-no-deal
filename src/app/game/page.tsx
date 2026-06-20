@@ -201,15 +201,15 @@ export default function GamePage() {
             <AnimatePresence mode="wait">
               {state.phase === 'pick_box' && (
                 <motion.div key="pick" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center py-2">
-                  <h2 className="text-xl font-black text-white mb-1">Choose your box</h2>
-                  <p className="text-white/50 text-sm">Pick one — you will keep it until the end or trade it away</p>
+                  <h2 className="text-4xl font-black text-white mb-2 tracking-tight">Choose your box</h2>
+                  <p className="text-white/40 text-sm">Pick one — you keep it until the end or trade it away</p>
                 </motion.div>
               )}
               {state.phase === 'opening' && (
                 <motion.div key="open" initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="text-center py-2">
-                  <h2 className="text-xl font-black text-white mb-1">Open {boxesLeft} box{boxesLeft !== 1 ? 'es' : ''}</h2>
-                  <p className="text-white/50 text-sm">
-                    {lastOpenedTitle ? `Last opened: ${lastOpenedTitle}` : 'Select boxes from the board to eliminate them'}
+                  <h2 className="text-4xl font-black text-white mb-2 tracking-tight">Open {boxesLeft} box{boxesLeft !== 1 ? 'es' : ''}</h2>
+                  <p className="text-white/40 text-sm">
+                    {lastOpenedTitle ? `Last opened: ${lastOpenedTitle}` : 'Select boxes from the board'}
                   </p>
                 </motion.div>
               )}
@@ -305,8 +305,10 @@ export default function GamePage() {
             <EliminatedPanel openedBoxes={state.boxes.filter(b => b.isOpen)} />
 
             {/* Today's board */}
-            <div className="rounded-xl border border-white/12 bg-white/5 p-4">
-              <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
+            <div className="rounded-xl overflow-hidden border border-white/8">
+              <div className="px-3 py-2 border-b border-white/6" style={{ background: 'rgba(255,255,255,0.03)' }}>
+                <AnimeValueBoard openedAnime={state.openedHistory.map(h => h.anime)} seed={state.dailySeed} />
+              </div>
             </div>
           </aside>
 
